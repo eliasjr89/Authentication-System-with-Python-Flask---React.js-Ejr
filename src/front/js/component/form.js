@@ -5,20 +5,25 @@ import { Context } from '../store/appContext';
 import { Navigate, Link } from 'react-router-dom';
 import "../../styles/form.css";
 
-function FormData() {
+function FormData({ isSignup = false }) {
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');  // Estado para manejar el mensaje de error
+    const [error, setError] = useState('');
 
     async function sendData(e) {
         e.preventDefault();
-        setError('');  // Reiniciar el mensaje de error antes de intentar loguear
+        setError('');
 
-        const response = await actions.login(email, password);
+        let response;
+        if (isSignup) {
+            response = await actions.signup(email, password); // Cambia a signup para registro
+        } else {
+            response = await actions.login(email, password); // Mantiene login para inicio
+        }
 
         if (!response.success) {
-            setError(response.message);  // Mostrar el mensaje de error si falla el login
+            setError(response.message);
         }
     }
 
@@ -28,24 +33,24 @@ function FormData() {
                 <div className="d-flex justify-content-center align-items-center flex-column mt-5">
                     <Form className="form-container" onSubmit={sendData}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label className="futuristic-label">Email address</Form.Label>
-                            <Form.Control 
-                                className="futuristic-input" 
-                                value={email} 
-                                onChange={(e) => setEmail(e.target.value)} 
-                                type="email" 
-                                placeholder="Enter email" 
+                            <Form.Label className="futuristic-label">Email</Form.Label>
+                            <Form.Control
+                                className="futuristic-input"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                type="email"
+                                placeholder="Enter email"
                             />
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label className="futuristic-label">Password</Form.Label>
-                            <Form.Control 
-                                className="futuristic-input" 
-                                value={password} 
-                                onChange={(e) => setPassword(e.target.value)} 
-                                type="password" 
-                                placeholder="Password" 
+                            <Form.Control
+                                className="futuristic-input"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                type="password"
+                                placeholder="Password"
                             />
                         </Form.Group>
 
@@ -56,12 +61,14 @@ function FormData() {
                         )}
 
                         <div className="d-flex justify-content-between">
-                            <Button variant="primary" type="submit">
-                                Login
+                            <Button variant="primary" type="submit" id="btnForm">
+                                {isSignup ? "Registrarse" : "Login"}
                             </Button>
-                            <Link to="/signup">
-                                <Button variant="primary" className="ms-2">Register</Button>
-                            </Link>
+                            {!isSignup && (
+                                <Link to="/signup">
+                                    <Button variant="primary" className="ms-2" id="btnForm">Register</Button>
+                                </Link>
+                            )}
                         </div>
                     </Form>
                 </div>
