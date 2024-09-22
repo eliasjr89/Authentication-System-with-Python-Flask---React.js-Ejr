@@ -37,7 +37,7 @@ export const PaginaPrivada = () => {
                     <div className="col"></div>
                     <div className="col">
                         <h1 className="display-4">
-                            Si has llegado hasta aquí, quiere decir que aprobé el proyecto!!
+                            Si has llegado hasta aquí, quiere decir que todo funciona correctamente!! 😍👌🚀🚀
                         </h1>
                         <br />
                     </div>
