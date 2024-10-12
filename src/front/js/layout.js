@@ -2,21 +2,26 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
-
 import { Home } from "./pages/home";
-import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
 import { LoginOk } from "./pages/loginOk";
 import { PaginaPrivada } from "./pages/paginaPrivada";
-import Signup from "./pages/signup";
 import { SignupOk } from "./pages/signupOk";
-import { LogoutPage } from "./pages/logoutOk"; // Importa la nueva página de despedida
+import { LogoutPage } from "./pages/logoutOk";
 import injectContext from "./store/appContext";
-
 import { Navbar } from "./component/navbar";
-import { Footer } from "./component/footer";
+import { Category } from "./pages/category";
+import { AddCategory } from "./pages/addCategory";
+import { CategoryDetails } from "./pages/categoryDetails";
+import { EditCategory } from "./pages/editCategory";
+import { AddAuthor } from "./pages/addAuthor";
+import { Author } from "./pages/author";
+import { AddNewspaper } from "./pages/addNewspaper";
+import { Newspaper } from "./pages/newspaper";
+import { NewspaperDetails } from "./pages/newspaperDetails";
+import { EditNewspaper } from "./pages/editNewspaper";
+// import { Article } from "./pages/article";
+// import { AddArticle } from "./pages/addArticle";
 
-//create your first component
 const Layout = () => {
     const basename = process.env.BASENAME || "";
 
@@ -29,16 +34,24 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<Demo />} path="/demo" />
-                        <Route element={<Single />} path="/single/:theid" />
-                        <Route element={<h1>Not found!</h1>} />
                         <Route element={<LoginOk />} path="/loginok" />
                         <Route element={<PaginaPrivada />} path="/paginaprivada" />
-                        <Route element={<Signup />} path="/signup" />
+                        <Route element={<Author />} path="/author"/>
+                        <Route element={<AddAuthor />} path="/add-Author"/>
+                        <Route element={<Newspaper />} path="/newspaper"/>
+                        <Route element={<AddNewspaper />} path="/add-Newspaper"/>
+                        <Route element={<NewspaperDetails />} path="/newspaper-details/:id"/>
+                        <Route element={<EditNewspaper />} path="/edit-newspaper/:id" />
+                        {/* <Route element={<Article />} path="/article" />
+                        <Route element={<AddArticle />} path="/addArticle" /> */}
+                        <Route element={<Category />} path="/category" />
+                        <Route element={<AddCategory />} path="/add-category" />
+                        <Route element={<EditCategory />} path="/edit-category/:id" />
+                        <Route element={<CategoryDetails />} path="/category-details/:id" />
                         <Route element={<SignupOk />} path="/signupok" />
-                        <Route element={<LogoutPage />} path="/logoutOk" /> {/* Ruta para la página de despedida */}
+                        <Route element={<LogoutPage />} path="/logoutOk" />
+                        <Route element={<h1>Not found!</h1>} />
                     </Routes>
-                    {/* <Footer /> */}
                 </ScrollToTop>
             </BrowserRouter>
         </div>

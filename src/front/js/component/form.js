@@ -5,7 +5,7 @@ import { Context } from '../store/appContext';
 import { Navigate, Link } from 'react-router-dom';
 import "../../styles/form.css";
 
-function FormData({ isSignup = false }) {
+export const Login = ({ isSignup = false }) => {
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,9 +17,9 @@ function FormData({ isSignup = false }) {
 
         let response;
         if (isSignup) {
-            response = await actions.signup(email, password); // Cambia a signup para registro
+            response = await actions.signup(email, password);
         } else {
-            response = await actions.login(email, password); // Mantiene login para inicio
+            response = await actions.login(email, password);
         }
 
         if (!response.success) {
@@ -75,6 +75,4 @@ function FormData({ isSignup = false }) {
             }
         </>
     );
-}
-
-export default FormData;
+};

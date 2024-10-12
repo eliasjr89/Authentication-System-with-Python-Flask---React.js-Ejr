@@ -1,0 +1,8 @@
+.container {
+    max-width: 800px; /* Limitar el ancho máximo */
+    margin: 0 auto; /* Centrar horizontalmente */
+}
+
+h1 {
+    font-size: 2.5rem; /* Aumentar el tamaño del título */
+}

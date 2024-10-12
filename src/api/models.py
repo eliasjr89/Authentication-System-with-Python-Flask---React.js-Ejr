@@ -1,19 +1,132 @@
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+
 
 db = SQLAlchemy()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(100), nullable=True)
+    last_name = db.Column(db.String(100), nullable=True)   
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), unique=False, nullable=False)
-    is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    is_active = db.Column(db.Boolean, default=True)
 
     def __repr__(self):
-        return f'<User {self.email}>'
+        return f"<User {self.first_name} {self.last_name}, Email: {self.email}>"
 
     def serialize(self):
         return {
-            "id": self.id,
-            "email": self.email,
-            # do not serialize the password, its a security breach
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'email': self.email,
+        }
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    articles = db.relationship('Article', backref='category', cascade='all, delete-orphan')
+
+    def __repr__(self):
+        return f"<Category {self.name}>"
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description
+        }
+
+class UserCategory(db.Model):
+    __tablename__ = 'user_categories'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+
+    user = db.relationship('User', backref='user_categories')
+    category = db.relationship('Category', backref='user_categories')
+
+    def __repr__(self):
+        return f"<UserCategory User ID: {self.user_id}, Category ID: {self.category_id}>"
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'category_id': self.category_id,
+        }
+
+class Author(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    photo = db.Column(db.String(255))
+
+    # Relación con Artículos
+    articles = db.relationship('Article', backref='author', cascade='all, delete-orphan')
+
+    def __repr__(self):
+        return f"<Author {self.name}>"
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'photo': self.photo
+        }
+
+class Newspaper(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    logo = db.Column(db.String(255))
+    link = db.Column(db.String(255))
+
+    # Relación con Artículos
+    articles = db.relationship('Article', backref='newspaper', cascade='all, delete-orphan')
+
+    def __repr__(self):
+        return f"<Newspaper {self.name}>"
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'logo': self.logo,
+            'link': self.link
+        }
+
+class Article(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text)
+    image = db.Column(db.String(255))
+    published_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    source = db.Column(db.String(255))
+    link = db.Column(db.String(255))
+
+    # Claves foráneas para conectar con Author, Newspaper y Category
+    author_id = db.Column(db.Integer, db.ForeignKey('author.id'), nullable=False)
+    newspaper_id = db.Column(db.Integer, db.ForeignKey('newspaper.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+
+    def __repr__(self):
+        return f"<Article {self.title}>"
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'content': self.content,
+            'image': self.image,
+            'published_date': self.published_date.isoformat() if self.published_date else None,
+            'source': self.source,
+            'link': self.link,
+            'author': self.author.serialize() if self.author else None,
+            'newspaper': self.newspaper.serialize() if self.newspaper else None,
+            'category': self.category.serialize() if self.category else None
         }

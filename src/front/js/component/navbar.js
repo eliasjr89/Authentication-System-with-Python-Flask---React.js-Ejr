@@ -1,17 +1,23 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link, useNavigate } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css'; // Asegúrate de importar Bootstrap
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+import { Modal, Button } from "react-bootstrap";
+import { LoginForm } from "../component/loginForm";
+import { SignupForm } from "../component/signupForm";
 import "../../styles/navbar.css";
 
 export const Navbar = () => {
     const { store, actions } = useContext(Context);
+    const [modalShow, setModalShow] = useState(false);
+    const [isLogin, setIsLogin] = useState(true);
+    const [open, setOpen] = useState(false); // Definido aquí
+    const location = useLocation();
     const navigate = useNavigate(); // Usar useNavigate para redirigir
-    const [open, setOpen] = useState(false); // Estado para manejar la apertura del menú
 
     const handleLogout = () => {
-        actions.logout();
-        setOpen(false); // Ocultar el menú
+        actions.logout(); // Esto debería eliminar el token del localStorage
+        setOpen(false); // Cerrar el menú
         navigate("/logoutOk"); // Redirigir a la página de despedida
     };
 
@@ -23,12 +29,14 @@ export const Navbar = () => {
         <>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div className="container d-flex justify-content-between align-items-center">
-                    {/* Link 'Bienvenido' a la izquierda */}
                     <Link to="/" className="navbar-brand">
-                        <h1 className="text-light">Bienvenido</h1>
+                        <h1 className="text-light">App News</h1>
                     </Link>
-                    
-                    {/* Solo mostrar el botón de menú si el usuario está autenticado */}
+                    {store.auth === false && location.pathname === "/" && (
+                        <Button onClick={() => setModalShow(true)} className="btn btn-light">
+                            Iniciar Sesión
+                        </Button>
+                    )}
                     {store.auth === true && (
                         <button 
                             onClick={toggleMenu} 
@@ -39,6 +47,21 @@ export const Navbar = () => {
                     )}
                 </div>
             </nav>
+
+            {/* Modal para Iniciar Sesión o Registro */}
+            <Modal show={modalShow} onHide={() => setModalShow(false)} ClassName="modal-dialog-centered">
+                <Modal.Header closeButton>
+                    <Modal.Title>{isLogin ? "Iniciar Sesión" : "Registro"}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="mt-4">
+                    {isLogin ? <LoginForm onClose={() => setModalShow(false)} /> : <SignupForm />}
+                    <div className="mt-3">
+                        <Button variant="link" onClick={() => setIsLogin(!isLogin)}>
+                            {isLogin ? "¿No tienes una cuenta? Regístrate" : "¿Ya tienes una cuenta? Inicia sesión"}
+                        </Button>
+                    </div>
+                </Modal.Body>
+            </Modal>
 
             {/* Menú desplegable */}
             <div className={`menu ${open ? "open" : "closed"}`}>
