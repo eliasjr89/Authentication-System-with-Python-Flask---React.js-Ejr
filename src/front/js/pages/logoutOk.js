@@ -18,7 +18,7 @@ export const LogoutOk = () => {
     return (
         <>
             {redirect ? <Navigate to="/" /> : null}
-            <div 
+            <div
                 className="d-flex justify-content-center align-items-center mt-5"
                 style={{
                     textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)"

@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom"; 
+import { useParams, useNavigate } from "react-router-dom";
 import { Form, Button, Card } from "react-bootstrap";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 
 export const EditNewspaper = () => {
-    const { store, actions } = useContext(Context); 
+    const { store, actions } = useContext(Context);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -60,10 +60,10 @@ export const EditNewspaper = () => {
 
     return (
         <div className="container mt-4">
-            <h2 className="text-center mb-4 display-5"> 
+            <h2 className="text-center mb-4 display-5">
                 Edit Newspaper
             </h2>
-            <Card className="shadow bg-light"> 
+            <Card className="shadow bg-light">
                 <Card.Body>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formNewspaperName">

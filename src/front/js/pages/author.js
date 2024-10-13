@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Button, Row, Col, Container } from "react-bootstrap"; 
+import { Button, Row, Col, Container } from "react-bootstrap";
 import { Context } from "../store/appContext";
 import { CardAuthor } from "../component/cardAuthor";
 
@@ -15,20 +15,20 @@ export const Author = () => {
     return (
         <Container className="mt-5 shadow p-4 bg-white rounded">
             <h1 className="display-4 text-center mb-4 text-dark">Authors</h1>
-            
-            <div className="d-flex justify-content-between mt-3 mb-3 flex-wrap"> 
+
+            <div className="d-flex justify-content-between mt-3 mb-3 flex-wrap">
                 <Link to="/add-author">
-                <Button variant="primary" className="mx-2 mb-2 shadow">
-                    Add Category
-                </Button>
+                    <Button variant="primary" className="mx-2 mb-2 shadow">
+                        Add Category
+                    </Button>
                 </Link>
 
                 {location.pathname === "/author" && (
-                <Link to="/">
-                    <Button variant="secondary" className="mx-2 mb-2 shadow mt-2">
-                    Back to Home
-                    </Button>
-                </Link>
+                    <Link to="/">
+                        <Button variant="secondary" className="mx-2 mb-2 shadow mt-2">
+                            Back to Home
+                        </Button>
+                    </Link>
                 )}
             </div>
 

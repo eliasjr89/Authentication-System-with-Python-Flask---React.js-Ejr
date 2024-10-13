@@ -1,12 +1,12 @@
 // src/front/js/pages/EditCategory.js
 import React, { useContext, useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom"; 
+import { useParams, useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 
 export const EditCategory = () => {
-    const { store, actions } = useContext(Context); 
+    const { store, actions } = useContext(Context);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ export const EditCategory = () => {
             if (result.isConfirmed) {
                 await actions.updateCategory(id, formData);
                 Swal.fire("Saved!", "", "success");
-                navigate("/category"); // Redirigir a la lista de categorías después de guardar
+                navigate("/category");
             } else if (result.isDenied) {
                 Swal.fire("Changes are not saved", "", "info");
             }
@@ -58,7 +58,7 @@ export const EditCategory = () => {
     return (
         <div className="container mt-4">
             <h2>Edit Category</h2>
-            <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}> {/* Añadir sombra y estilo al Form */}
+            <Form className="shadow p-4 bg-white rounded" onSubmit={handleSubmit}>
                 <Form.Group controlId="formCategoryName">
                     <Form.Label>Category Name</Form.Label>
                     <Form.Control

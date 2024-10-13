@@ -43,7 +43,7 @@ export const Newspaper = () => {
   return (
     <Container fluid className="my-4 shadow p-4 bg-white rounded">
       <h1 className="display-4 text-center my-4 text-dark">Newspapers</h1>
-      
+
       <div className="d-flex justify-content-between mt-3 mb-3">
         <Link to="/add-newspaper">
           <Button variant="primary" className="mx-2 shadow">

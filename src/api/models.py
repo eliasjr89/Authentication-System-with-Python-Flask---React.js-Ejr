@@ -1,13 +1,12 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 
-
 db = SQLAlchemy()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(100), nullable=True)
-    last_name = db.Column(db.String(100), nullable=True)   
+    first_name = db.Column(db.String(100), nullable=False)  # Cambiado a nullable=False
+    last_name = db.Column(db.String(100), nullable=False)   # Cambiado a nullable=False   
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     is_active = db.Column(db.Boolean, default=True)
@@ -64,7 +63,6 @@ class Author(db.Model):
     description = db.Column(db.Text)
     photo = db.Column(db.String(255))
 
-    # Relación con Artículos
     articles = db.relationship('Article', backref='author', cascade='all, delete-orphan')
 
     def __repr__(self):
@@ -85,7 +83,6 @@ class Newspaper(db.Model):
     logo = db.Column(db.String(255))
     link = db.Column(db.String(255))
 
-    # Relación con Artículos
     articles = db.relationship('Article', backref='newspaper', cascade='all, delete-orphan')
 
     def __repr__(self):
@@ -128,4 +125,23 @@ class Article(db.Model):
             'author': self.author.serialize() if self.author else None,
             'newspaper': self.newspaper.serialize() if self.newspaper else None,
             'category': self.category.serialize() if self.category else None
+        }
+
+class CategoryArticles(db.Model):
+    __tablename__ = 'category_articles'
+    id = db.Column(db.Integer, primary_key=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+    article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
+
+    category = db.relationship('Category', backref='category_articles')
+    article = db.relationship('Article', backref='category_articles')
+
+    def __repr__(self):
+        return f"<CategoryArticle Category ID: {self.category_id}, Article ID: {self.article_id}>"
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'category_id': self.category_id,
+            'article_id': self.article_id,
         }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Form, Button } from "react-bootstrap"; 
+import { Form, Button } from "react-bootstrap";
 import { Context } from "../store/appContext";
-import { useNavigate, Link } from "react-router-dom"; 
+import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const AddAuthor = () => {
@@ -10,9 +10,8 @@ export const AddAuthor = () => {
     const [description, setDescription] = useState("");
     const [photo, setPhoto] = useState("");
     const [id, setId] = useState(null);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
-    // Cargar los datos del autor temporal al iniciar
     useEffect(() => {
         if (store.temp && store.temp.id) {
             setName(store.temp.name);
@@ -30,7 +29,6 @@ export const AddAuthor = () => {
     const handleSave = async (e) => {
         e.preventDefault();
 
-        // Si existe un ID, se actualiza el autor, sino se agrega uno nuevo
         if (id) {
             await actions.updateAuthor(id, { name, description, photo });
             Swal.fire({
@@ -47,22 +45,19 @@ export const AddAuthor = () => {
             });
         }
 
-        // Limpiar los campos del formulario y restablecer el estado
         setName("");
         setDescription("");
         setPhoto("");
         setId(null);
 
-        // Redirigir a la lista de autores
         navigate("/author");
     };
 
     return (
         <div className="container mt-4 text-dark">
             <h1 className="display-4 text-center mb-4 text-dark">{id ? "Update Author" : "Add New Author"}</h1>
-            <div className="shadow p-4 mb-5 bg-white rounded"> {/* Fondo blanco y sombra */}
+            <div className="shadow p-4 mb-5 bg-white rounded">
                 <Form onSubmit={handleSave}>
-                    {/* Campo de nombre del autor */}
                     <Form.Group controlId="authorName">
                         <Form.Label>Name</Form.Label>
                         <Form.Control
@@ -73,8 +68,6 @@ export const AddAuthor = () => {
                             required
                         />
                     </Form.Group>
-
-                    {/* Campo de descripción del autor */}
                     <Form.Group controlId="authorDescription" className="mt-3">
                         <Form.Label>Description</Form.Label>
                         <Form.Control
@@ -85,8 +78,6 @@ export const AddAuthor = () => {
                             required
                         />
                     </Form.Group>
-
-                    {/* Campo de URL de la foto del autor */}
                     <Form.Group controlId="authorPhoto" className="mt-3">
                         <Form.Label>Photo URL</Form.Label>
                         <Form.Control
@@ -97,14 +88,12 @@ export const AddAuthor = () => {
                             required
                         />
                     </Form.Group>
-
-                    {/* Botones para agregar/actualizar autor y regresar */}
                     <div className="d-flex justify-content-between mt-3">
                         <Button variant="primary" type="submit" className="shadow">
-                            {id ? "Update Author" : "Add Author"} {/* Botón dinámico según el estado */}
+                            {id ? "Update Author" : "Add Author"}
                         </Button>
                         <Link to="/author">
-                            <Button variant="secondary" className="shadow"> {/* Botón para regresar */}
+                            <Button variant="secondary" className="shadow">
                                 Back to Authors
                             </Button>
                         </Link>

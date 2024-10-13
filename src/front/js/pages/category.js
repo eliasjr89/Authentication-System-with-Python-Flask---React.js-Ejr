@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Button, Table, Container } from "react-bootstrap"; 
+import { Button, Table, Container } from "react-bootstrap";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 
@@ -44,10 +44,10 @@ export const Category = () => {
   return (
     <Container className="my-4 shadow p-4 bg-white rounded">
       <h1 className="display-4 text-center my-4 text-dark">Categories</h1>
-      
-      <div className="d-flex justify-content-between mt-3 mb-3 flex-wrap"> {/* Flex-wrap para un diseño responsive */} 
+
+      <div className="d-flex justify-content-between mt-3 mb-3 flex-wrap">
         <Link to="/add-category">
-          <Button variant="primary" className="mx-2 mb-2 shadow"> {/* Sombra para un diseño moderno */} 
+          <Button variant="primary" className="mx-2 mb-2 shadow">
             Add Category
           </Button>
         </Link>
@@ -63,8 +63,8 @@ export const Category = () => {
 
       <hr className="my-4" />
 
-      <div className="table-responsive"> {/* Responsividad para la tabla */} 
-        <Table striped bordered hover className="shadow"> {/* Sombra en la tabla para un diseño más atractivo */}
+      <div className="table-responsive">
+        <Table striped bordered hover className="shadow">
           <thead>
             <tr>
               <th>ID</th>
@@ -89,7 +89,7 @@ export const Category = () => {
                   <td>
                     <div className="d-flex justify-content-around flex-wrap">
                       <Link to={`/category-details/${category.id}`}>
-                        <Button variant="info" className="mx-1 mb-1"> {/* Margen inferior para mejor adaptación en móviles */} 
+                        <Button variant="info" className="mx-1 mb-1">
                           View
                         </Button>
                       </Link>

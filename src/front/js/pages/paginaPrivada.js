@@ -54,10 +54,10 @@ export const PaginaPrivada = () => {
                             <Link to="/profile" className="btn btn-secondary btn-lg">
                                 Ver Perfil
                             </Link>
-                            <Button 
-                                variant="danger" 
+                            <Button
+                                variant="danger"
                                 size="lg"
-                                onClick={() => actions.logout()} 
+                                onClick={() => actions.logout()}
                             >
                             </Button>
                             <Category />

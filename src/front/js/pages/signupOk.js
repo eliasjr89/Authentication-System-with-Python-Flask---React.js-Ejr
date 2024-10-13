@@ -9,18 +9,17 @@ export const SignupOk = () => {
 
     useEffect(() => {
         const redirectTimeout = setTimeout(() => {
-            // Solo redirigir si el usuario está autenticado
             if (store.auth) {
                 setRedirect(true);
             }
-        }, 3000);
+        }, 2000); // Redirigir después de 2 segundos
 
         return () => clearTimeout(redirectTimeout);
-    }, [store.auth]); // Agregar store.auth como dependencia
+    }, [store.auth]);
 
     return (
         <>
-            {redirect && <Navigate to="/paginaprivada" />}
+            {redirect && <Navigate to="/" />}
 
             <div 
                 className="d-flex justify-content-center align-items-center mt-5" 
@@ -32,7 +31,7 @@ export const SignupOk = () => {
                     <h2 className="text-center">Registro realizado correctamente</h2>
                     <h5 className="text-center">Redirigiendo a la página principal...</h5>
                     <br />
-                    <div className="text-center mt-4"> {/* Añadido un margin-top */}
+                    <div className="text-center mt-4">
                         <div className="spinner-border" role="status">
                             <span className="visually-hidden">Cargando...</span>
                         </div>

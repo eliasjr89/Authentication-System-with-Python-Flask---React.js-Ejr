@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css'; 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from "react-bootstrap";
 import { LoginForm } from "../component/loginForm";
 import { SignupForm } from "../component/signupForm";
@@ -43,8 +43,8 @@ export const Navbar = () => {
                         </Button>
                     )}
                     {store.auth === true && (
-                        <button 
-                            onClick={toggleMenu} 
+                        <button
+                            onClick={toggleMenu}
                             className="btn btn-light"
                         >
                             Menu

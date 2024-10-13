@@ -18,7 +18,7 @@ export const LoginOk = () => {
     return (
         <>
             {redirect ? <Navigate to="/user-Categories" /> : null}
-            <div 
+            <div
                 className="d-flex justify-content-center align-items-center vh-50">
                 <div className="container text-center">
                     <div className="row align-items-start mt-5">

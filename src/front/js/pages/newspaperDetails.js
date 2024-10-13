@@ -5,7 +5,7 @@ import { Context } from "../store/appContext";
 
 export const NewspaperDetails = () => {
     const { store } = useContext(Context);
-    const { id } = useParams(); 
+    const { id } = useParams();
     const [newspaper, setNewspaper] = useState(null);
     const navigate = useNavigate();
 
@@ -17,29 +17,29 @@ export const NewspaperDetails = () => {
     }, [id, store.newspapers]);
 
     if (!newspaper) {
-        return <div>Loading...</div>; 
+        return <div>Loading...</div>;
     }
 
     return (
         <Container className="mt-4">
-            <Card className="shadow bg-light"> 
+            <Card className="shadow bg-light">
                 <Card.Body>
-                    <Card.Title className="text-center display-5"> 
+                    <Card.Title className="text-center display-5">
                         Newspaper Details
                     </Card.Title>
-                    
-                    <Card.Text className="mt-4"> 
+
+                    <Card.Text className="mt-4">
                         <strong>ID:</strong> {newspaper.id}
                     </Card.Text>
-                    
+
                     <Card.Text>
                         <strong>Name:</strong> {newspaper.name}
                     </Card.Text>
-                    
+
                     <Card.Text>
                         <strong>Description:</strong> {newspaper.description}
                     </Card.Text>
-                    
+
                     <Card.Text>
                         <strong>Logo:</strong>
                         <a href={newspaper.logo} target="_blank" rel="noopener noreferrer" className="ml-2">
@@ -50,9 +50,9 @@ export const NewspaperDetails = () => {
                             />
                         </a>
                     </Card.Text>
-                    
+
                     <Card.Text>
-                        <strong>Link:</strong> 
+                        <strong>Link:</strong>
                         <a href={newspaper.link} target="_blank" rel="noopener noreferrer" className="ml-2">
                             {newspaper.link}
                         </a>
@@ -60,7 +60,7 @@ export const NewspaperDetails = () => {
 
                     <div className="d-flex justify-content-between flex-wrap mt-4">
                         <Link to={`/edit-newspaper/${newspaper.id}`}>
-                            <Button variant="warning" className="shadow mb-2"> 
+                            <Button variant="warning" className="shadow mb-2">
                                 Edit Newspaper
                             </Button>
                         </Link>

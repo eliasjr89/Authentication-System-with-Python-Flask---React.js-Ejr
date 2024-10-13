@@ -29,7 +29,7 @@ export const CategoryDetails = () => {
                     <Card.Text className="mb-2"><strong>ID:</strong> {category.id}</Card.Text>
                     <Card.Text className="mb-2"><strong>Name:</strong> {category.name}</Card.Text>
                     <Card.Text className="mb-4"><strong>Description:</strong> {category.description}</Card.Text>
-                    
+
                     <div className="d-flex justify-content-between mt-4 flex-wrap">
                         <Link to={`/edit-category/${category.id}`}>
                             <Button variant="warning" className="mx-2 mb-2 shadow">

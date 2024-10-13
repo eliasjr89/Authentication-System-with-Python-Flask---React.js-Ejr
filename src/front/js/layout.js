@@ -21,6 +21,7 @@ import { NewspaperDetails } from "./pages/newspaperDetails";
 import { EditNewspaper } from "./pages/editNewspaper";
 import { UserCategories } from "./pages/userCategory";
 import { AddArticle } from "./pages/addArticle";
+import { SignupForm } from "./component/signupForm";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -35,15 +36,16 @@ const Layout = () => {
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<LoginOk />} path="/loginok" />
+                        <Route element={<SignupForm />} path="/signup" />
                         <Route element={<UserCategories />} path="/user-Categories" />
                         <Route element={<PaginaPrivada />} path="/paginaprivada" />
-                        <Route element={<Author />} path="/author"/>
-                        <Route element={<AddAuthor />} path="/add-Author"/>
-                        <Route element={<Newspaper />} path="/newspaper"/>
-                        <Route element={<AddNewspaper />} path="/add-Newspaper"/>
-                        <Route element={<NewspaperDetails />} path="/newspaper-details/:id"/>
+                        <Route element={<Author />} path="/author" />
+                        <Route element={<AddAuthor />} path="/add-Author" />
+                        <Route element={<Newspaper />} path="/newspaper" />
+                        <Route element={<AddNewspaper />} path="/add-Newspaper" />
+                        <Route element={<NewspaperDetails />} path="/newspaper-details/:id" />
                         <Route element={<EditNewspaper />} path="/edit-newspaper/:id" />
-                        <Route element={<AddArticle />} path="/add-Article"  />
+                        <Route element={<AddArticle />} path="/add-Article" />
                         <Route element={<Category />} path="/category" />
                         <Route element={<AddCategory />} path="/add-category" />
                         <Route element={<EditCategory />} path="/edit-category/:id" />

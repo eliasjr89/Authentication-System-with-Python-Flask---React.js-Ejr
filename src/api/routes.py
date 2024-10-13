@@ -18,19 +18,10 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
-
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
-
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
-
-    return jsonify(response_body), 200
-
 ############# C.R.U.D USER ##############
 
 @api.route('/user', methods=['GET'])
+
 def get_users():
     users = User.query.all()
     resultados = list(map(lambda item: item.serialize(), users))
@@ -41,6 +32,7 @@ def get_users():
     return jsonify(resultados), 200
 
 @api.route('/user/<int:user_id>', methods=['GET'])
+
 def get_user_id(user_id):
     user = User.query.get(user_id)
 
@@ -50,10 +42,9 @@ def get_user_id(user_id):
     return jsonify(user.serialize()), 200
 
 @api.route('/user', methods=['POST'])
+
 def add_new_user():
     request_body_user = request.get_json()
-
-    # Verificación de campos requeridos
     if (
         "first_name" not in request_body_user
         or "last_name" not in request_body_user
@@ -62,15 +53,13 @@ def add_new_user():
     ):
         return jsonify({"error": "Datos incompletos"}), 400
 
-    # Verificar si el correo ya existe en la base de datos
+
     existing_user = User.query.filter_by(email=request_body_user["email"]).first()
     if existing_user:
         return jsonify({"error": "El correo ya está registrado"}), 400
 
-    # Hashear la contraseña usando werkzeug
-    hashed_password = generate_password_hash(request_body_user["password"]).decode('utf-8')
+    hashed_password = generate_password_hash(request_body_user["password"])
 
-    # Crear un nuevo usuario
     new_user = User(
         first_name=request_body_user["first_name"],
         last_name=request_body_user["last_name"],
@@ -79,11 +68,10 @@ def add_new_user():
     )
 
     try:
-        # Guardar el nuevo usuario en la base de datos
         db.session.add(new_user)
         db.session.commit()
     except Exception as e:
-        db.session.rollback()  # Si hay error, deshacer los cambios
+        db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
     response_body = {
@@ -92,8 +80,8 @@ def add_new_user():
 
     return jsonify(response_body), 201
 
-
 @api.route('/user/<int:user_id>', methods=['PUT'])
+
 def update_user(user_id):
     request_body_user = request.get_json()
 
@@ -112,13 +100,13 @@ def update_user(user_id):
             return jsonify({"error": "El correo ya está en uso por otro usuario"}), 400
         user.email = request_body_user["email"]
     if "password" in request_body_user:
-        user.password = bcrypt.generate_password_hash(request_body_user["password"]).decode('utf-8')
-
+        user.password = generate_password_hash(request_body_user["password"])
     db.session.commit()
 
     return jsonify({'message': f'Usuario con id {user_id} ha sido actualizado correctamente'}), 200
 
 @api.route('/user/<int:user_id>', methods=['DELETE'])
+
 def delete_user(user_id):
     user = User.query.get(user_id)
 
@@ -133,6 +121,7 @@ def delete_user(user_id):
 ############# C.R.U.D CATEGORY ##############
 
 @api.route('/category', methods=['GET'])
+
 def get_categories():
     categories = Category.query.all()
     resultados = list(map(lambda item: item.serialize(), categories))
@@ -143,6 +132,7 @@ def get_categories():
     return jsonify(resultados), 200
 
 @api.route('/category/<int:category_id>', methods=['GET'])
+
 def get_category(category_id):
     category = Category.query.get(category_id)
 
@@ -152,6 +142,7 @@ def get_category(category_id):
     return jsonify(category.serialize()), 200
 
 @api.route('/category', methods=['POST'])
+
 def add_new_category():
     request_body_category = request.get_json()
 
@@ -173,6 +164,7 @@ def add_new_category():
     return jsonify(response_body), 201
 
 @api.route('/category/<int:category_id>', methods=['PUT'])
+
 def update_category(category_id):
     request_body_category = request.get_json()
 
@@ -191,6 +183,7 @@ def update_category(category_id):
     return jsonify({'message': f'Categoría con id {category_id} ha sido actualizada correctamente'}), 200
 
 @api.route('/category/<int:category_id>', methods=['DELETE'])
+
 def delete_category(category_id):
     category = Category.query.get(category_id)
 
@@ -205,6 +198,7 @@ def delete_category(category_id):
 ############# C.R.U.D USER CATEGORY ##############
 
 @api.route('/user-category', methods=['GET'])
+
 def get_user_categories():
     user_categories = UserCategory.query.all()
     results = list(map(lambda item: item.serialize(), user_categories))
@@ -215,6 +209,7 @@ def get_user_categories():
     return jsonify(results), 200
 
 @api.route('/user-category/<int:user_id>', methods=['GET'])
+
 def get_user_categories_by_user(user_id):
     user_categories = UserCategory.query.filter_by(user_id=user_id).all()
     
@@ -225,6 +220,7 @@ def get_user_categories_by_user(user_id):
     return jsonify(results), 200
 
 @api.route('/user-category', methods=['POST'])
+
 def add_user_category():
     request_body = request.get_json()
 
@@ -242,6 +238,7 @@ def add_user_category():
     return jsonify({"msg": "Relación entre usuario y categoría añadida correctamente"}), 200
 
 @api.route('/user-category/<int:user_category_id>', methods=['DELETE'])
+
 def delete_user_category(user_category_id):
     user_category = UserCategory.query.get(user_category_id)
 
@@ -256,12 +253,14 @@ def delete_user_category(user_category_id):
 ############# C.R.U.D AUTHOR ##############
 
 @api.route('/author', methods=['GET'])
+
 def get_author():
     all_authors = Author.query.all()
     authors = list(map(lambda character: character.serialize(), all_authors))
     return jsonify(authors), 200
 
 @api.route('/author/<int:author_id>', methods=['GET'])
+
 def get_author_by_id(author_id):
     author = Author.query.filter_by(id=author_id).first()
 
@@ -271,6 +270,7 @@ def get_author_by_id(author_id):
     return jsonify(author.serialize()), 200
 
 @api.route('/author', methods=['POST'])
+
 def post_author():
     body = request.get_json()
 
@@ -297,6 +297,7 @@ def post_author():
         return jsonify({'error': str(e)}), 500
 
 @api.route('/author/<int:author_id>', methods=['DELETE'])
+
 def delete_author_by_id(author_id):
     author = Author.query.filter_by(id=author_id).first()
 
@@ -309,6 +310,7 @@ def delete_author_by_id(author_id):
     return jsonify(author.serialize()), 200
 
 @api.route('/author/<int:author_id>', methods=['PUT'])
+
 def update_author(author_id):
     request_body_author = request.get_json()
 
@@ -331,12 +333,14 @@ def update_author(author_id):
 ############# C.R.U.D NEWSPAPER ##############
 
 @api.route('/newspaper', methods=['GET'])
+
 def get_newspaper():
     all_newspapers = Newspaper.query.all()
     newspapers = list(map(lambda character: character.serialize(),all_newspapers))
     return jsonify(newspapers), 200
 
 @api.route('/newspaper/<int:newspaper_id>', methods=['GET'])
+
 def get_newspaper_by_id(newspaper_id):
     newspaper = Newspaper.query.filter_by(id=newspaper_id).first()
 
@@ -346,6 +350,7 @@ def get_newspaper_by_id(newspaper_id):
     return jsonify(newspaper.serialize()), 200
 
 @api.route('/newspaper', methods=['POST'])
+
 def post_newspaper():
     body = request.get_json()
 
@@ -374,6 +379,7 @@ def post_newspaper():
         return jsonify({'error': str(e)}), 500
 
 @api.route('/newspaper/<int:newspaper_id>', methods=['DELETE'])
+
 def delete_newspaper_by_id(newspaper_id):
     newspaper = Newspaper.query.filter_by(id=newspaper_id).first()
 
@@ -386,6 +392,7 @@ def delete_newspaper_by_id(newspaper_id):
     return jsonify(newspaper.serialize()), 200
 
 @api.route('/newspaper/<int:newspaper_id>', methods=['PUT'])
+
 def update_newspaper(newspaper_id):
     request_body_newspaper = request.get_json()
 
@@ -411,12 +418,24 @@ def update_newspaper(newspaper_id):
 ############# C.R.U.D ARTICLE ##############
 
 @api.route('/article', methods=['GET'])
+
 def get_article():
     all_articles = Article.query.all()
     articles = list(map(lambda article: article.serialize(), all_articles))
     return jsonify(articles), 200
 
+@api.route('/category/<int:category_id>/article', methods=['GET'])
+
+def get_articles_by_category(category_id):
+    category = Category.query.get(category_id)
+    if category is None:
+        return jsonify({'error': 'Categoría no encontrada'}), 404
+
+    articles = Article.query.filter_by(category_id=category.id).all()
+    return jsonify([article.serialize() for article in articles]), 200
+
 @api.route('/article/<int:article_id>', methods=['GET'])
+
 def get_article_by_id(article_id):
     article = Article.query.filter_by(id=article_id).first()
 
@@ -426,6 +445,7 @@ def get_article_by_id(article_id):
     return jsonify(article.serialize()), 200
 
 @api.route('/article', methods=['POST'])
+
 def create_article():
     try:
         data = request.get_json()
@@ -451,8 +471,8 @@ def create_article():
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
-
 @api.route('/article/<int:article_id>', methods=['DELETE'])
+
 def delete_article_by_id(article_id):
     article = Article.query.filter_by(id=article_id).first()
 
@@ -465,15 +485,15 @@ def delete_article_by_id(article_id):
     return jsonify(article.serialize()), 200
 
 @api.route('/article/<int:article_id>', methods=['PUT'])
+
 def update_article(article_id):
-    request_body_article = request.get_json()  # Obtén los datos del cuerpo de la solicitud
+    request_body_article = request.get_json()
     article = Article.query.get(article_id)
     
     if not article:
         return jsonify({'message': "article no encontrado"}), 404
 
     try:
-        # Actualiza los campos del artículo con los valores del request
         if 'title' in request_body_article:
             article.title = request_body_article['title']
         if 'content' in request_body_article:
@@ -493,16 +513,13 @@ def update_article(article_id):
         if 'category_id' in request_body_article:
             article.category_id = request_body_article['category_id']
 
-        # Guarda los cambios en la base de datos
         db.session.commit()
         return jsonify({'message': f'article con id {article_id} ha sido actualizado correctamente'}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
-
 ######## LOGIN ########
-
 
 @api.route("/login", methods=["POST"])
 def login():
@@ -519,43 +536,22 @@ def login():
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token)
 
-
 ######## SIGNUP ########
-
 @api.route('/signup', methods=['POST'])
 def signup():
     body = request.get_json()
+    user = User.query.filter_by(email=body["email"]).first()
 
-    # Validar que los campos email, password, first_name y last_name estén presentes
-    if not body or 'email' not in body or 'password' not in body or 'first_name' not in body or 'last_name' not in body:
-        return jsonify({"msg": "El email, la contraseña, el nombre y el apellido son obligatorios"}), 400
-
-    email = body["email"]
-    password = body["password"]
-    first_name = body["first_name"]
-    last_name = body["last_name"]
-
-    if '@' not in email:
-        return jsonify({"msg": "El email debe contener el carácter @"}), 400
-
-    user = User.query.filter_by(email=email).first()
     if user is None:
-        new_user = User(
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            password=generate_password_hash(password),
-            is_active=True
-        )
-        db.session.add(new_user)
+        user = User(email=body["email"], password=body["password"], is_active=True)
+        db.session.add(user)
         db.session.commit()
         response_body = {
             "msg": "Usuario creado correctamente"
         }
-        return jsonify(response_body), 201
+        return jsonify(response_body), 200
     else:
         return jsonify({"msg": "El correo electrónico ya está registrado"}), 400
-
 
 ######## PRIVATE PAGE########
 
@@ -566,4 +562,4 @@ def protected():
     return jsonify(logged_in_as=current_user), 200
 
 if __name__ == "__main__":
-    app.run()
+    api.run()

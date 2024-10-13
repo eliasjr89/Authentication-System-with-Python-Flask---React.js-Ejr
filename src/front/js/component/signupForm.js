@@ -1,115 +1,90 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
-import { Button, Modal, Form, Alert } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export const SignupForm = ({ handleClose, setIsLogin }) => {
+export const SignupForm = () => {
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const { actions } = useContext(Context);
-    const navigate = useNavigate();
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState("");
+    const [signupSuccess, setSignupSuccess] = useState(false);
 
-    const handleSignup = async () => {
-        if (password !== confirmPassword) {
-            setErrorMessage("Las contraseñas no coinciden.");
-            return;
-        }
-
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            setErrorMessage("El email ingresado no es válido.");
-            return;
-        }
-
-        const requestBody = {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            password: password
-        };
-
-        try {
-            const result = await actions.signup(requestBody);
-            if (result.success) {
-                console.log('Registro exitoso:', result.message);
-                handleClose();
-                navigate("/signupOk");
-            } else {
-                setErrorMessage(result.message);
-            }
-        } catch (error) {
-            console.error('Error en el registro:', error);
-            setErrorMessage("Ocurrió un error al registrarse. Por favor, inténtelo de nuevo más tarde.");
+    const handleSignup = async (e) => {
+        e.preventDefault();
+        const response = await actions.signup(firstName, lastName, email, password);
+        if (response.success) {
+            setSignupSuccess(true);
+        } else {
+            setErrorMessage(response.message);
         }
     };
 
+    if (signupSuccess) {
+        return <Navigate to="/signupok" replace />;
+    }
+
     return (
-        <Modal.Body>
-            {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
-            <Form onSubmit={(e) => { e.preventDefault(); handleSignup(); }}>
-                <Form.Group className="mb-3" controlId="firstName">
-                    <Form.Label>Nombre:</Form.Label>
-                    <Form.Control
+        <div className="container text-center mt-5">
+            <h1>Registro</h1>
+            <br />
+            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+            <form onSubmit={handleSignup}> 
+                <div className="mb-3">
+                    <label htmlFor="firstName" className="form-label">First Name:</label>
+                    <input
                         type="text"
+                        className="form-control"
+                        id="firstName"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
-                        placeholder="Ingrese su nombre"
                         required
                     />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="lastName">
-                    <Form.Label>Apellido:</Form.Label>
-                    <Form.Control
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="lastName" className="form-label">Last Name:</label>
+                    <input
                         type="text"
+                        className="form-control"
+                        id="lastName"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
-                        placeholder="Ingrese su apellido"
                         required
                     />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="email">
-                    <Form.Label>Email:</Form.Label>
-                    <Form.Control
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="email" className="form-label">Email:</label>
+                    <input
                         type="email"
+                        className="form-control"
+                        id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Ingrese su email"
                         required
                     />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="password">
-                    <Form.Label>Contraseña:</Form.Label>
-                    <Form.Control
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="password" className="form-label">Contraseña:</label>
+                    <input
                         type="password"
+                        className="form-control"
+                        id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Ingrese su contraseña"
                         required
                     />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="confirmPassword">
-                    <Form.Label>Confirmar Contraseña:</Form.Label>
-                    <Form.Control
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="Confirme su contraseña"
-                        required
-                    />
-                </Form.Group>
-                <div className="d-flex justify-content-between align-items-center">
-                    <Button type="submit" className="btn btn-primary">
-                        Registro
-                    </Button>
-                    <Button type="button" className="btn btn-secondary" onClick={handleClose}>
-                        Volver
-                    </Button>
                 </div>
-            </Form>
-        </Modal.Body>
+                <button type="submit" className="btn btn-primary">
+                    Registrarse
+                </button>
+                <Link to="/">
+                    <button type="button" className="btn btn-primary" style={{ margin: "5px" }}>
+                        Volver a Inicio
+                    </button>
+                </Link>
+            </form>
+        </div>
     );
 };

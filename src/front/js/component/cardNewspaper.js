@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import rigoImage from "../../img/rigo-baby.jpg"; // Imagen por defecto
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 import "../../styles/index.css";
@@ -8,7 +7,6 @@ import "../../styles/index.css";
 export const CardNewspaper = (props) => {
   const { actions } = useContext(Context);
 
-  // Asegúrate de que estás pasando las propiedades correctas a setid
   const handleEditPaper = () => {
     actions.setid({
       id: props.id,

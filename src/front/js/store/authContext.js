@@ -1,11 +1,9 @@
 import { createContext, useContext, useReducer } from 'react';
 
-// Estado inicial
 const initialState = {
-    isAuthenticated: false, // Cambia esto según el estado de autenticación real
+    isAuthenticated: false,
 };
 
-// Reducer
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'LOGIN':
@@ -17,10 +15,8 @@ const authReducer = (state, action) => {
     }
 };
 
-// Contexto
 const AuthContext = createContext();
 
-// Proveedor del contexto
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, initialState);
 
@@ -39,7 +35,6 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-// Hook para usar el contexto
 export const useAuth = () => {
     return useContext(AuthContext);
 };
