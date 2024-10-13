@@ -47,7 +47,7 @@ export const EditNewspaper = () => {
             if (result.isConfirmed) {
                 await actions.updateNewspaper(id, formData);
                 Swal.fire("Saved!", "", "success");
-                navigate("/newspaper"); // Redirigir a la lista de periódicos después de guardar
+                navigate("/newspaper");
             } else if (result.isDenied) {
                 Swal.fire("Changes are not saved", "", "info");
             }
@@ -60,10 +60,10 @@ export const EditNewspaper = () => {
 
     return (
         <div className="container mt-4">
-            <h2 className="text-center mb-4 display-5"> {/* Título grande y centrado */} 
+            <h2 className="text-center mb-4 display-5"> 
                 Edit Newspaper
             </h2>
-            <Card className="shadow bg-light"> {/* Añadir sombra y fondo claro */}
+            <Card className="shadow bg-light"> 
                 <Card.Body>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formNewspaperName">
@@ -80,7 +80,7 @@ export const EditNewspaper = () => {
                         <Form.Group controlId="formNewspaperDescription" className="mt-3">
                             <Form.Label>Description</Form.Label>
                             <Form.Control
-                                as="textarea" // Cambié el input a textarea para mejor manejo de descripciones largas
+                                as="textarea"
                                 rows={3}
                                 name="description"
                                 value={formData.description}

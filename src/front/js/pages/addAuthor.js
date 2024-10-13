@@ -19,8 +19,6 @@ export const AddAuthor = () => {
             setDescription(store.temp.description);
             setPhoto(store.temp.photo);
             setId(store.temp.id);
-        } else {
-            console.log("No data in the temporary component, adding new author");
         }
     }, [store.temp]);
 

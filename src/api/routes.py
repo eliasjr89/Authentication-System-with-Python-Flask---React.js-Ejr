@@ -5,7 +5,8 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Category, UserCategory, Author, Newspaper, Article
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-import bcrypt
+
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -52,6 +53,7 @@ def get_user_id(user_id):
 def add_new_user():
     request_body_user = request.get_json()
 
+    # Verificación de campos requeridos
     if (
         "first_name" not in request_body_user
         or "last_name" not in request_body_user
@@ -60,12 +62,15 @@ def add_new_user():
     ):
         return jsonify({"error": "Datos incompletos"}), 400
 
+    # Verificar si el correo ya existe en la base de datos
     existing_user = User.query.filter_by(email=request_body_user["email"]).first()
     if existing_user:
         return jsonify({"error": "El correo ya está registrado"}), 400
 
-    hashed_password = bcrypt.generate_password_hash(request_body_user["password"]).decode('utf-8')
+    # Hashear la contraseña usando werkzeug
+    hashed_password = generate_password_hash(request_body_user["password"]).decode('utf-8')
 
+    # Crear un nuevo usuario
     new_user = User(
         first_name=request_body_user["first_name"],
         last_name=request_body_user["last_name"],
@@ -74,10 +79,11 @@ def add_new_user():
     )
 
     try:
+        # Guardar el nuevo usuario en la base de datos
         db.session.add(new_user)
         db.session.commit()
     except Exception as e:
-        db.session.rollback()
+        db.session.rollback()  # Si hay error, deshacer los cambios
         return jsonify({'error': str(e)}), 500
 
     response_body = {
@@ -85,6 +91,7 @@ def add_new_user():
     }
 
     return jsonify(response_body), 201
+
 
 @api.route('/user/<int:user_id>', methods=['PUT'])
 def update_user(user_id):

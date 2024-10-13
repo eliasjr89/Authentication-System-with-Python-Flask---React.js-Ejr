@@ -9,6 +9,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			temp: [],
 			auth: false,
 			newspapers: [],
+			articles: [],
+            article: null 
 		},
 		actions: {
 			login: async (email, password) => {
@@ -320,6 +322,101 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.error("Error deleting newspaper: ", error);
                 }
+            },
+
+			getArticles: async () => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/article`);
+                    const data = await response.json();
+                    if (response.ok) {
+                        setStore({ articles: data });
+                    } else {
+                        console.error('Error al obtener los artículos:', data);
+                    }
+                } catch (error) {
+                    console.error('Error en la solicitud de obtener artículos:', error);
+                }
+            },
+
+            // Obtener un artículo por su ID
+            getArticleById: async (articleId) => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/article/${articleId}`);
+                    const data = await response.json();
+                    if (response.ok) {
+                        setStore({ article: data });
+                    } else {
+                        console.error(`Error al obtener el artículo con ID ${articleId}:`, data);
+                    }
+                } catch (error) {
+                    console.error('Error en la solicitud de obtener artículo:', error);
+                }
+            },
+
+            // Crear un nuevo artículo
+			createArticle: async (articleData) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + "/api/article", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify(articleData)
+					});
+			
+					if (!resp.ok) throw new Error("Error al crear el artículo");
+			
+					const data = await resp.json();
+					return true; // Devuelve true si la creación fue exitosa
+				} catch (error) {
+					console.error(error);
+					return false; // Devuelve false si ocurrió un error
+				}
+			},
+
+            // Eliminar un artículo por su ID
+            deleteArticle: async (articleId) => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/article/${articleId}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        getActions().getArticles(); // Actualizar la lista de artículos
+                        console.log(`Artículo con ID ${articleId} eliminado`);
+                    } else {
+                        const data = await response.json();
+                        console.error(`Error al eliminar el artículo con ID ${articleId}:`, data);
+                    }
+                } catch (error) {
+                    console.error('Error en la solicitud de eliminar artículo:', error);
+                }
+            },
+
+            // Actualizar un artículo por su ID
+            updateArticle: async (articleId, updatedArticle) => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/article/${articleId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updatedArticle)
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        getActions().getArticles(); // Actualizar la lista de artículos
+                        console.log(`Artículo con ID ${articleId} actualizado:`, data);
+                    } else {
+                        console.error(`Error al actualizar el artículo con ID ${articleId}:`, data);
+                    }
+                } catch (error) {
+                    console.error('Error en la solicitud de actualizar artículo:', error);
+                }
+            },
+
+            // Setear los datos de un artículo en el estado
+            setid: (article) => {
+                setStore({ article });
             }
 		},
 	};

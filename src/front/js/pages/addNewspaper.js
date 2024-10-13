@@ -16,7 +16,7 @@ export const AddNewspaper = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await actions.createNewspaper(newNewspaper); // Llama a la acción para crear un periódico
+        await actions.createNewspaper(newNewspaper);
         Swal.fire({
             position: "center",
             icon: "success",
@@ -43,7 +43,7 @@ export const AddNewspaper = () => {
                                 value={newNewspaper.name}
                                 onChange={(e) => setNewNewspaper({ ...newNewspaper, name: e.target.value })}
                                 required
-                                className="shadow-sm" // Añadir sombra ligera
+                                className="shadow-sm"
                             />
                         </Form.Group>
                         <Form.Group controlId="newspaperDescription" className="mt-3">

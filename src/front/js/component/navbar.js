@@ -11,18 +11,23 @@ export const Navbar = () => {
     const { store, actions } = useContext(Context);
     const [modalShow, setModalShow] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
-    const [open, setOpen] = useState(false); // Definido aquí
+    const [open, setOpen] = useState(false);
     const location = useLocation();
-    const navigate = useNavigate(); // Usar useNavigate para redirigir
+    const navigate = useNavigate();
 
     const handleLogout = () => {
-        actions.logout(); // Esto debería eliminar el token del localStorage
-        setOpen(false); // Cerrar el menú
-        navigate("/logoutOk"); // Redirigir a la página de despedida
+        actions.logout();
+        setOpen(false);
+        navigate("/logoutOk");
     };
 
     const toggleMenu = () => {
-        setOpen(prevState => !prevState); // Cambiar el estado del menú
+        setOpen(prevState => !prevState);
+    };
+
+    const handleCloseModal = () => {
+        setModalShow(false);
+        setIsLogin(true);
     };
 
     return (
@@ -48,22 +53,26 @@ export const Navbar = () => {
                 </div>
             </nav>
 
-            {/* Modal para Iniciar Sesión o Registro */}
-            <Modal show={modalShow} onHide={() => setModalShow(false)} ClassName="modal-dialog-centered">
+            <Modal show={modalShow} onHide={handleCloseModal} className="modal-dialog-centered mt-5">
                 <Modal.Header closeButton>
-                    <Modal.Title>{isLogin ? "Iniciar Sesión" : "Registro"}</Modal.Title>
+                    <Modal.Title className="display-6 fw-bold">{isLogin ? "Iniciar Sesión" : "Registro"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="mt-4">
-                    {isLogin ? <LoginForm onClose={() => setModalShow(false)} /> : <SignupForm />}
+                    {isLogin ? (
+                        <LoginForm onClose={handleCloseModal} />
+                    ) : (
+                        <SignupForm handleClose={handleCloseModal} setIsLogin={setIsLogin} />
+                    )}
                     <div className="mt-3">
-                        <Button variant="link" onClick={() => setIsLogin(!isLogin)}>
+                        <Button variant="link" onClick={() => {
+                            setIsLogin(!isLogin);
+                        }}>
                             {isLogin ? "¿No tienes una cuenta? Regístrate" : "¿Ya tienes una cuenta? Inicia sesión"}
                         </Button>
                     </div>
                 </Modal.Body>
             </Modal>
 
-            {/* Menú desplegable */}
             <div className={`menu ${open ? "open" : "closed"}`}>
                 {open && (
                     <>
@@ -78,7 +87,6 @@ export const Navbar = () => {
                             <Link to="/" className="menu-item">Home</Link>
                             <Link to="/contact" className="menu-item">About us</Link>
                             <Link to="/services" className="menu-item">Services</Link>
-                            {/* Botón de logout dentro del menú */}
                             <button onClick={handleLogout} className="menu-item btn btn-danger">Logout</button>
                         </div>
                     </>

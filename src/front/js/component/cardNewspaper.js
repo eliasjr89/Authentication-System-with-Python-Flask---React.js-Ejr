@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import rigoImage from "../../img/rigo-baby.jpg"; // Imagen por defecto
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
-import "../../styles/home.css";
+import "../../styles/index.css";
 
 export const CardNewspaper = (props) => {
   const { actions } = useContext(Context);

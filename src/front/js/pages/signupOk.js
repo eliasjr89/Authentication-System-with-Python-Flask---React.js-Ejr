@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Navigate } from "react-router-dom";
-import "../../styles/home.css";
+import "../../styles/index.css";
 
 export const SignupOk = () => {
     const { store } = useContext(Context);
@@ -23,13 +23,8 @@ export const SignupOk = () => {
             {redirect && <Navigate to="/paginaprivada" />}
 
             <div 
-                className="d-flex justify-content-center align-items-center" 
+                className="d-flex justify-content-center align-items-center mt-5" 
                 style={{
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                    height: "100vh",
-                    color: "#ecf0f1",
                     textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)"
                 }}
             >
@@ -37,7 +32,7 @@ export const SignupOk = () => {
                     <h2 className="text-center">Registro realizado correctamente</h2>
                     <h5 className="text-center">Redirigiendo a la página principal...</h5>
                     <br />
-                    <div className="text-center">
+                    <div className="text-center mt-4"> {/* Añadido un margin-top */}
                         <div className="spinner-border" role="status">
                             <span className="visually-hidden">Cargando...</span>
                         </div>

@@ -1,0 +1,21 @@
+.container {
+    max-width: 800px;
+}
+
+.shadow {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.9);
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+.input-field {
+    border-radius: 0.5rem; 
+    transition: border-color 0.2s ease;
+}
+
+.input-field:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}

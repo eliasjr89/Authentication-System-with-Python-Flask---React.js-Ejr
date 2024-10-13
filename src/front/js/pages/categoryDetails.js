@@ -6,11 +6,10 @@ import { Context } from "../store/appContext";
 
 export const CategoryDetails = () => {
     const { store } = useContext(Context);
-    const { id } = useParams(); // Obtener el ID de la categoría desde la URL
+    const { id } = useParams();
     const [category, setCategory] = useState(null);
     const navigate = useNavigate();
 
-    // Cargar los datos de la categoría cuando se monta el componente
     useEffect(() => {
         const selectedCategory = store.categories.find(cat => cat.id === parseInt(id));
         if (selectedCategory) {

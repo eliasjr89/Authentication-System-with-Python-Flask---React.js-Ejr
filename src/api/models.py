@@ -109,7 +109,6 @@ class Article(db.Model):
     source = db.Column(db.String(255))
     link = db.Column(db.String(255))
 
-    # Claves foráneas para conectar con Author, Newspaper y Category
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'), nullable=False)
     newspaper_id = db.Column(db.Integer, db.ForeignKey('newspaper.id'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)

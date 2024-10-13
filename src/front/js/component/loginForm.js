@@ -1,14 +1,15 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom"; // Importar useNavigate
+import { useNavigate } from "react-router-dom";
+import "../../styles/index.css";
 
-export const LoginForm = ({ onClose }) => { // Recibe onClose como prop
+export const LoginForm = ({ onClose }) => {
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const navigate = useNavigate(); // Inicializar useNavigate
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,9 +18,8 @@ export const LoginForm = ({ onClose }) => { // Recibe onClose como prop
         const response = await actions.login(email, password);
 
         if (response.success) {
-            // Si el login es exitoso, redirigir y cerrar el modal
-            navigate("/signupOk");
-            onClose(); // Cierra el modal
+            navigate("/loginOk");
+            onClose();
         } else {
             setError(response.message);
         }

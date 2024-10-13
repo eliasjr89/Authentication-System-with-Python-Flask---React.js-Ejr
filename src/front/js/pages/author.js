@@ -16,9 +16,9 @@ export const Author = () => {
         <Container className="mt-5 shadow p-4 bg-white rounded">
             <h1 className="display-4 text-center mb-4 text-dark">Authors</h1>
             
-            <div className="d-flex justify-content-between mt-3 mb-3 flex-wrap"> {/* Flex-wrap para un diseño responsive */} 
+            <div className="d-flex justify-content-between mt-3 mb-3 flex-wrap"> 
                 <Link to="/add-author">
-                <Button variant="primary" className="mx-2 mb-2 shadow"> {/* Sombra para un diseño moderno */} 
+                <Button variant="primary" className="mx-2 mb-2 shadow">
                     Add Category
                 </Button>
                 </Link>

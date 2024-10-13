@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Navigate } from "react-router-dom";
-// import BcgImg from '../../img/fondo.png';
-import "../../styles/home.css";
+import "../../styles/index.css";
 
-export const LogoutPage = () => {
+export const LogoutOk = () => {
     const { store, actions } = useContext(Context);
     const [redirect, setRedirect] = useState(false);
 
@@ -20,28 +19,20 @@ export const LogoutPage = () => {
         <>
             {redirect ? <Navigate to="/" /> : null}
             <div 
-                className="d-flex justify-content-center align-items-center"
+                className="d-flex justify-content-center align-items-center mt-5"
                 style={{
-                    // backgroundImage: `url(${BcgImg})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                    height: "100vh",
-                    color: "#000000",
-                    textShadow: "0 10px 10px rgba(0, 0, 0, 0.9)"
+                    textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)"
                 }}
             >
                 <div className="container text-center">
-                    <div className="row align-items-start mt-3"> {/* Cambié mt-5 a mt-3 */}
-                        <div className="col"></div>
+                    <div className="row align-items-start mt-3">
                         <div className="col-12 col-md-10">
-                            <h2 className="display-6 fw-bold">Has cerrado sesión</h2>
-                            <h5 className="mb-4">Redirigiendo a la página de inicio de sesión...</h5>
-                            <div className="spinner-border text-light" role="status">
+                            <h2 className="display-6 fw-bold">Closing session...</h2>
+                            <h5 className="mb-4">See you soon</h5>
+                            <div className="spinner-border" role="status">
                                 <span className="visually-hidden">Cargando...</span>
                             </div>
                         </div>
-                        <div className="col"></div>
                     </div>
                 </div>
             </div>
