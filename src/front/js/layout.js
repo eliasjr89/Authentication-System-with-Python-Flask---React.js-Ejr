@@ -34,20 +34,20 @@ const Layout = () => {
                 <ScrollToTop>
                     <Navbar />
                     <Routes>
+                        <Route element={<Author />} path="/authors" />
+                        <Route element={<AddAuthor />} path="/add-author" />
+                        <Route element={<AddArticle />} path="/add-article" />
+                        <Route element={<AddCategory />} path="/add-category" />
                         <Route element={<Home />} path="/" />
                         <Route element={<LoginOk />} path="/loginok" />
                         <Route element={<SignupForm />} path="/signup" />
-                        <Route element={<UserCategories />} path="/user-Categories" />
                         <Route element={<PaginaPrivada />} path="/paginaprivada" />
-                        <Route element={<Author />} path="/author" />
-                        <Route element={<AddAuthor />} path="/add-Author" />
-                        <Route element={<Newspaper />} path="/newspaper" />
-                        <Route element={<AddNewspaper />} path="/add-Newspaper" />
+                        <Route element={<Category />} path="/categories" />
+                        <Route element={<UserCategories />} path="/user-categories" />
+                        <Route element={<Newspaper />} path="/newspapers" />
+                        <Route element={<AddNewspaper />} path="/add-newspaper" />
                         <Route element={<NewspaperDetails />} path="/newspaper-details/:id" />
                         <Route element={<EditNewspaper />} path="/edit-newspaper/:id" />
-                        <Route element={<AddArticle />} path="/add-Article" />
-                        <Route element={<Category />} path="/category" />
-                        <Route element={<AddCategory />} path="/add-category" />
                         <Route element={<EditCategory />} path="/edit-category/:id" />
                         <Route element={<CategoryDetails />} path="/category-details/:id" />
                         <Route element={<SignupOk />} path="/signupok" />

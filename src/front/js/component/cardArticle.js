@@ -61,7 +61,7 @@ export const CardArticle = ({
     };
 
     return (
-        <div className="card m-2 shadow-sm" style={{ width: "18rem" }}>
+        <div className="card m-2 shadow" style={{ width: "100%", maxWidth: "18rem" }}>
             <img
                 src={editedArticle.image || "https://via.placeholder.com/150"}
                 className="card-img-top"

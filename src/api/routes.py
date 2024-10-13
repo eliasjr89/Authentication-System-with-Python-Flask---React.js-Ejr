@@ -556,7 +556,6 @@ def signup():
 ######## PRIVATE PAGE########
 
 @api.route("/paginaprivada", methods=["GET"])
-@jwt_required()
 def protected():
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200

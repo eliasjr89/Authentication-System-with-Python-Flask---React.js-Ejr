@@ -1,4 +1,3 @@
-// src/front/js/pages/CategoryDetails.js
 import React, { useContext, useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button, Card } from "react-bootstrap";
@@ -36,7 +35,7 @@ export const CategoryDetails = () => {
                                 Edit Category
                             </Button>
                         </Link>
-                        <Button variant="secondary" className="mx-2 mb-2 shadow" onClick={() => navigate("/category")}>
+                        <Button variant="secondary" className="mx-2 mb-2 shadow" onClick={() => navigate("/categories")}>
                             Back to Categories
                         </Button>
                     </div>

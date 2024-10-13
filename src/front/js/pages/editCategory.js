@@ -44,7 +44,7 @@ export const EditCategory = () => {
             if (result.isConfirmed) {
                 await actions.updateCategory(id, formData);
                 Swal.fire("Saved!", "", "success");
-                navigate("/category");
+                navigate("/categories");
             } else if (result.isDenied) {
                 Swal.fire("Changes are not saved", "", "info");
             }
@@ -52,7 +52,7 @@ export const EditCategory = () => {
     };
 
     const handleGoBack = () => {
-        navigate("/category");
+        navigate("/categories");
     };
 
     return (

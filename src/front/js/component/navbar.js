@@ -32,7 +32,7 @@ export const Navbar = () => {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow">
                 <div className="container d-flex justify-content-between align-items-center">
                     <Link to="/" className="navbar-brand">
                         <h1 className="text-light">App News</h1>

@@ -52,7 +52,7 @@ export const Category = () => {
           </Button>
         </Link>
 
-        {location.pathname === "/category" && (
+        {location.pathname === "/categories" && (
           <Link to="/">
             <Button variant="secondary" className="mx-2 mb-2 shadow mt-2">
               Back to Home

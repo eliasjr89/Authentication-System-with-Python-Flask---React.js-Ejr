@@ -19,12 +19,13 @@ export const UserCategories = () => {
             setSelectedCategories([...selectedCategories, categoryId]);
         }
     };
+
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
     return (
-        <div className="container">
-            <h1 className="display-4">Add one or more categories</h1>
+        <div className="container d-flex flex-column align-items-center mt-5" style={{ minHeight: "100vh" }}>
+            <h1 className="display-4 text-center mb-4">Add one or more categories</h1>
 
             <Button variant="primary" className="mb-3" onClick={handleShowModal}>
                 Add Categories
@@ -32,26 +33,12 @@ export const UserCategories = () => {
 
             <hr className="my-4" />
 
-            <div className="mt-3">
-                <h4>Selected Categories:</h4>
-                {selectedCategories.length === 0 ? (
-                    <p>No categories selected.</p>
-                ) : (
-                    <ul>
-                        {selectedCategories.map((id) => {
-                            const category = store.categories.find(cat => cat.id === id);
-                            return <li key={id}>{category.name}</li>;
-                        })}
-                    </ul>
-                )}
-            </div>
-
-            <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal show={showModal} onHide={handleCloseModal} className="mt-3">
                 <Modal.Header closeButton>
                     <Modal.Title>Select Categories</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="d-flex flex-wrap">
+                    <div className="d-flex flex-wrap justify-content-center">
                         {store.categories.length === 0 ? (
                             <p className="text-center w-100">--- No categories available ---</p>
                         ) : (
@@ -67,18 +54,6 @@ export const UserCategories = () => {
                             ))
                         )}
                     </div>
-
-                    <h5 className="mt-4">Selected Categories:</h5>
-                    {selectedCategories.length === 0 ? (
-                        <p>No categories selected.</p>
-                    ) : (
-                        <ul>
-                            {selectedCategories.map((id) => {
-                                const category = store.categories.find(cat => cat.id === id);
-                                return <li key={id}>{category.name}</li>;
-                            })}
-                        </ul>
-                    )}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseModal}>
@@ -89,7 +64,6 @@ export const UserCategories = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-
         </div>
     );
 };

@@ -20,7 +20,7 @@ export const AddCategory = () => {
             timer: 1500,
         });
         setTimeout(() => {
-            navigate("/category");
+            navigate("/categories");
         }, 1500);
     };
 
@@ -54,7 +54,7 @@ export const AddCategory = () => {
                         <Button variant="primary" type="submit" className="shadow">
                             Add Category
                         </Button>
-                        <Link to="/category">
+                        <Link to="/categories">
                             <Button variant="secondary" className="shadow">
                                 Back to Categories
                             </Button>
