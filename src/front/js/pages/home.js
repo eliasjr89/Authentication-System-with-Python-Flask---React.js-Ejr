@@ -7,11 +7,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
-  const [visibleArticles, setVisibleArticles] = useState(3);
+  const [visibleArticles, setVisibleArticles] = useState(1);
 
   useEffect(() => {
     actions.getArticles();
-  }, []);
+  }, [actions]);
 
   const loadMoreArticles = () => {
     if (!store.isAuthenticated) {
@@ -44,7 +44,6 @@ export const Home = () => {
             Regístrate aquí
           </Link>
         </p>
-
         <h2 className="text-center mt-5">Noticias Recientes</h2>
         <div className="row mt-3">
           {store.articles && store.articles.length > 0 ? (
@@ -68,7 +67,6 @@ export const Home = () => {
             <p className="text-center">No hay artículos disponibles.</p>
           )}
         </div>
-
         {visibleArticles < store.articles.length && (
           <div className="text-center mt-4">
             <button className="btn btn-primary" onClick={loadMoreArticles}>

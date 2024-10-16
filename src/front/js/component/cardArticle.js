@@ -1,5 +1,4 @@
-// src/component/CardArticle.js
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Card, Button } from "react-bootstrap";
 import { FaThumbsUp } from "react-icons/fa";
 import { Context } from "../store/appContext";
@@ -17,11 +16,36 @@ export const CardArticle = ({
   category,
 }) => {
   const { store, actions } = useContext(Context);
-  const [likes, setLikes] = useState(0);
+  
 
-  const handleLike = () => {
-    setLikes(likes + 1);
-    actions.addFavoriteArticle(id); 
+  const isFavorited = store.favoriteArticles.some(article => article.article_id === id);
+
+  const handleLike = async (id, user_id) => {
+    try {
+      const userId = store.userId;
+      
+      if (!id || !userId) {
+        console.error("Article ID and User ID are required.");
+        return; 
+      }
+
+      let success;
+
+
+      if (isFavorited) {
+        success = await actions.removeFavoriteArticle(id, userId);
+        if (success) {
+          console.log("Artículo eliminado de favoritos");
+        }
+      } else {
+        success = await actions.addFavoriteArticle(id, userId);
+        if (success) {
+          console.log("Artículo agregado a favoritos");
+        }
+      }
+    } catch (error) {
+      console.error("Error al manejar el artículo favorito", error);
+    }
   };
 
   return (
@@ -44,18 +68,22 @@ export const CardArticle = ({
           <small className="text-muted">
             {published_date && new Date(published_date).toLocaleDateString()} 
             {source && ` | ${source}`} 
-            {newspaper && ` | ${newspaper}`} 
-            {author && ` | by ${author}`} 
-            {category && ` | Category: ${category}`}
+            {newspaper && ` | ${newspaper.name}`} 
+            {author && ` | by ${author.name}`} 
+            {category && ` | Category: ${category.name}`}
           </small>
         </Card.Footer>
+
         <div className="d-flex align-items-center mt-3">
           <Button variant="primary" href={link} target="_blank" className="me-2">
             Read More
           </Button>
-          <Button variant="outline-success" onClick={handleLike}>
-            <FaThumbsUp className="me-1" /> 
-            {likes}
+          <Button
+            variant={isFavorited ? "success" : "outline-success"}
+            onClick={handleLike}
+          >
+            <FaThumbsUp className="me-1" />
+            {isFavorited ? "Added to Favorites" : "Add to Favorites"}
           </Button>
         </div>
       </Card.Body>

@@ -19,7 +19,6 @@ export const LoginForm = ({ onClose }) => {
 
         if (response.success) {
             navigate("/loginOk");
-            onClose();
         } else {
             setError(response.message);
         }

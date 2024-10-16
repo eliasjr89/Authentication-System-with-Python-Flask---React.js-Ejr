@@ -355,9 +355,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(articleData)
 					});
-
-					if (!resp.ok) throw new Error("Error al crear el artículo");
-
+					if (!resp.ok) {
+						const errorData = await resp.json();
+						throw new Error(`Error al crear el artículo: ${errorData.message || "Unknown error"}`);
+					}
 					const data = await resp.json();
 					return true;
 				} catch (error) {
@@ -365,7 +366,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;
 				}
 			},
-
+			
 			deleteArticle: async (articleId) => {
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/article/${articleId}`, {
@@ -401,6 +402,118 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				} catch (error) {
 					console.error('Error en la solicitud de actualizar artículo:', error);
+				}
+			},
+
+			getFavoritesArticles: async () => {
+				try {
+					const response = await fetch(`${BACKEND_URL}/favorites`, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					});
+
+					if (!response.ok) {
+						throw new Error('Error fetching favorite articles');
+					}
+
+					const data = await response.json();
+					setStore({ favoriteArticles: data });
+				} catch (error) {
+					console.error(error);
+				}
+			},
+
+			getFavoriteArticleById: async (articleId) => {
+				try {
+					const response = await fetch(`${BACKEND_URL}/favorites/${articleId}`, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					});
+
+					if (!response.ok) {
+						throw new Error('Error fetching favorite article');
+					}
+
+					const data = await response.json();
+					return data;
+				} catch (error) {
+					console.error(error);
+				}
+			},
+
+			addFavoriteArticle: async (articleId, userId) => {
+				if (!articleId || !userId) {
+				  console.error('Article ID and User ID are required.');
+				  return false;
+				}
+			  
+				try {
+				  const response = await fetch(`${BACKEND_URL}/favorites`, {
+					method: 'POST',
+					headers: {
+					  'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ article_id: articleId, user_id: userId }),
+				  });
+			  
+				  if (response.ok) {
+					const data = await response.json();
+			  
+
+					setStore((prevStore) => ({
+					  ...prevStore,
+					  favoriteArticles: [...prevStore.favoriteArticles, data],
+					}));
+			  
+					console.log("Artículo agregado a favoritos", data); 
+					return true; 
+				  } else {
+					
+					const errorData = await response.json();
+					console.error('Error al agregar artículo a favoritos:', errorData);
+					return false;
+				  }
+				} catch (error) {
+				  console.error("Error en la solicitud:", error);
+				  return false;
+				}
+			  },
+			  
+			  removeFavoriteArticle: async (articleId) => {
+				if (!articleId) {
+				  console.error('Article ID is required.');
+				  return false;
+				}
+			  
+				try {
+				  const response = await fetch(`${BACKEND_URL}/favorites/${articleId}`, {
+					method: 'DELETE',
+					headers: {
+					  'Content-Type': 'application/json',
+					},
+				  });
+			  
+				  if (response.ok) {
+	
+					setStore((prevStore) => ({
+					  ...prevStore,
+					  favoriteArticles: prevStore.favoriteArticles.filter(article => article.article_id !== articleId)
+					}));
+			  
+					console.log("Artículo eliminado de favoritos", articleId);
+					return true; 
+				  } else {
+					const errorData = await response.json();
+					console.error('Error al eliminar el artículo de favoritos:', errorData);
+					return false;
+				  }
+				} catch (error) {
+				  console.error("Error en la solicitud:", error);
+				  return false;
 				}
 			},
 

@@ -83,7 +83,7 @@ export const AddNewspaper = () => {
                         </div>
 
                         <div className="d-flex justify-content-end mt-2">
-                            <Link to="/newspaper">
+                            <Link to="/newspapers">
                                 <Button variant="secondary" className="shadow">
                                     Back to Newspapers
                                 </Button>

@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Row, Col, Container } from "react-bootstrap";
 import { Context } from "../store/appContext";
-import { CardNewspaper } from "../component/cardNewspaper"; // Necesitarás crear este componente
+import { CardNewspaper } from "../component/cardNewspaper";
 
 export const Newspaper = () => {
     const { store, actions } = useContext(Context);
@@ -22,14 +22,11 @@ export const Newspaper = () => {
                         Add Newspaper
                     </Button>
                 </Link>
-
-                {location.pathname === "/newspaper" && (
-                    <Link to="/">
-                        <Button variant="secondary" className="mx-2 mb-2 shadow mt-2">
-                            Back to Home
-                        </Button>
-                    </Link>
-                )}
+                <Link to="/">
+                    <Button variant="secondary" className="mx-2 mb-2 shadow mt-2">
+                        Back to Home
+                    </Button>
+                </Link>
             </div>
 
             <hr className="my-4" />

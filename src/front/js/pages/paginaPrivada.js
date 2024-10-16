@@ -15,50 +15,24 @@ export const PaginaPrivada = () => {
         };
 
         checkAuth();
-    }, [actions]); // Dependencia en actions
-
+    }, [actions]); 
     if (isChecking) {
-        return <div className="text-center">Cargando...</div>; // Puedes agregar un loader aquí si deseas
+        return <div className="text-center">Cargando...</div>;
     }
 
     if (!store.auth) {
-        return <Navigate to="/login" />; // Redirige si no está autenticado
+        return <Navigate to="/login" />;
     }
 
     return (
         <div
-            className="d-flex flex-column justify-content-center align-items-center text-center"
-            style={{
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                minHeight: "100vh",
-                padding: "20px",
-                color: "#000000",
-                textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)"
-            }}
-        >
+            className="d-flex flex-column justify-content-center align-items-center text-center mt-5">
             <div className="container">
                 <div className="row align-items-center">
                     <div className="col-12 col-md-10 offset-md-1">
                         <h1 className="display-4 fw-bold">
                             ¡Bienvenido a la página privada!
                         </h1>
-                        <div className="d-flex flex-wrap justify-content-center gap-3 mt-4">
-                            <Link to="/" className="btn btn-primary btn-lg">
-                                Ir a Home
-                            </Link>
-                            <Link to="/profile" className="btn btn-secondary btn-lg">
-                                Ver Perfil
-                            </Link>
-                            <Button
-                                variant="danger"
-                                size="lg"
-                                onClick={() => actions.logout()}
-                            >
-                                Cerrar Sesión
-                            </Button>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -1,23 +1,23 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { Context } from "../store/appContext";
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import { useNavigate } from "react-router-dom"; 
 import { Link } from "react-router-dom";
 
 export const UserCategories = () => {
     const { store, actions } = useContext(Context);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const navigate = useNavigate(); // Inicializa useNavigate
+    const navigate = useNavigate(); 
 
     useEffect(() => {
-        // Verifica si el usuario está autenticado
+
         if (!store.auth) {
-            navigate("/"); // Redirige a la página de inicio o login
+            navigate("/");
         } else {
-            actions.loadCategories(); // Carga las categorías solo si está autenticado
+            actions.loadCategories(); 
         }
-    }, [store.auth]); // Asegúrate de que se ejecute cada vez que cambie el estado de autenticación
+    }, [store.auth]);
 
     const handleSelectCategory = (categoryId) => {
         if (selectedCategories.includes(categoryId)) {
@@ -31,8 +31,7 @@ export const UserCategories = () => {
     const handleCloseModal = () => setShowModal(false);
 
     const handleContinue = () => {
-        // Aquí puedes agregar lógica para guardar las categorías seleccionadas si es necesario
-        navigate("/paginaprivada"); // Cambia esto a la ruta de tu página privada
+        navigate("/paginaprivada"); 
     };
 
     return (
@@ -76,8 +75,6 @@ export const UserCategories = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-
-            {/* Botón para continuar */}
             {selectedCategories.length > 0 && (
                 <Link to="/paginaprivada">
                     <Button variant="success" onClick={handleContinue}>

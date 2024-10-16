@@ -23,9 +23,9 @@ export const Article = () => {
                     <Link to="/add-article" className="me-2">
                         <Button variant="primary" className="shadow">Add Article</Button>
                     </Link>
-                    {/* El botón de Editar ha sido eliminado */}
-                    <Link to="/" className="me-2"> {/* Cambia la ruta según tu lógica */}
-                        <Button variant="secondary" className="shadow">Cancel</Button> {/* Botón de Cancelar */}
+
+                    <Link to="/" className="me-2"> 
+                        <Button variant="secondary" className="shadow">Back to home</Button>
                     </Link>
                 </div>
             </div>

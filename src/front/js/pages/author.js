@@ -23,13 +23,12 @@ export const Author = () => {
                     </Button>
                 </Link>
 
-                {location.pathname === "/author" && (
-                    <Link to="/">
-                        <Button variant="secondary" className="mx-2 mb-2 shadow mt-2">
-                            Back to Home
-                        </Button>
-                    </Link>
-                )}
+                {/* Botón para volver a la página de inicio */}
+                <Link to="/">
+                    <Button variant="secondary" className="mx-2 mb-2 shadow mt-2">
+                        Back to Home
+                    </Button>
+                </Link>
             </div>
 
             <hr className="my-4" />

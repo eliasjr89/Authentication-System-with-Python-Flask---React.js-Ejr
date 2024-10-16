@@ -144,3 +144,23 @@ class CategoryArticles(db.Model):
             'category_id': self.category_id,
             'article_id': self.article_id,
         }
+
+class FavoriteArticle(db.Model):
+    __tablename__ = 'favorite_articles'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
+
+    user = db.relationship('User', backref='favorite_articles')
+    article = db.relationship('Article', backref='favorite_articles')
+
+    def __repr__(self):
+        return f"<FavoriteArticle User ID: {self.user_id}, Article ID: {self.article_id}>"
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'article_id': self.article_id,
+            'article': self.article.serialize() if self.article else None,
+        }

@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Category, UserCategory, Author, Newspaper, Article
+from api.models import db, User, Category, UserCategory, Author, Newspaper, Article, FavoriteArticle
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -20,7 +20,6 @@ CORS(api)
 ############# C.R.U.D USER ##############
 
 @api.route('/user', methods=['GET'])
-
 def get_users():
     users = User.query.all()
     resultados = list(map(lambda item: item.serialize(), users))
@@ -31,7 +30,6 @@ def get_users():
     return jsonify(resultados), 200
 
 @api.route('/user/<int:user_id>', methods=['GET'])
-
 def get_user_id(user_id):
     user = User.query.get(user_id)
 
@@ -41,7 +39,6 @@ def get_user_id(user_id):
     return jsonify(user.serialize()), 200
 
 @api.route('/user', methods=['POST'])
-
 def add_new_user():
     request_body_user = request.get_json()
     if (
@@ -80,7 +77,6 @@ def add_new_user():
     return jsonify(response_body), 201
 
 @api.route('/user/<int:user_id>', methods=['PUT'])
-
 def update_user(user_id):
     request_body_user = request.get_json()
 
@@ -105,7 +101,6 @@ def update_user(user_id):
     return jsonify({'message': f'Usuario con id {user_id} ha sido actualizado correctamente'}), 200
 
 @api.route('/user/<int:user_id>', methods=['DELETE'])
-
 def delete_user(user_id):
     user = User.query.get(user_id)
 
@@ -120,7 +115,6 @@ def delete_user(user_id):
 ############# C.R.U.D CATEGORY ##############
 
 @api.route('/category', methods=['GET'])
-
 def get_categories():
     categories = Category.query.all()
     resultados = list(map(lambda item: item.serialize(), categories))
@@ -131,7 +125,6 @@ def get_categories():
     return jsonify(resultados), 200
 
 @api.route('/category/<int:category_id>', methods=['GET'])
-
 def get_category(category_id):
     category = Category.query.get(category_id)
 
@@ -141,7 +134,6 @@ def get_category(category_id):
     return jsonify(category.serialize()), 200
 
 @api.route('/category', methods=['POST'])
-
 def add_new_category():
     request_body_category = request.get_json()
 
@@ -163,7 +155,6 @@ def add_new_category():
     return jsonify(response_body), 201
 
 @api.route('/category/<int:category_id>', methods=['PUT'])
-
 def update_category(category_id):
     request_body_category = request.get_json()
 
@@ -182,7 +173,6 @@ def update_category(category_id):
     return jsonify({'message': f'Categoría con id {category_id} ha sido actualizada correctamente'}), 200
 
 @api.route('/category/<int:category_id>', methods=['DELETE'])
-
 def delete_category(category_id):
     category = Category.query.get(category_id)
 
@@ -249,14 +239,12 @@ def delete_user_category(user_category_id):
 ############# C.R.U.D AUTHOR ##############
 
 @api.route('/author', methods=['GET'])
-
 def get_author():
     all_authors = Author.query.all()
     authors = list(map(lambda character: character.serialize(), all_authors))
     return jsonify(authors), 200
 
 @api.route('/author/<int:author_id>', methods=['GET'])
-
 def get_author_by_id(author_id):
     author = Author.query.filter_by(id=author_id).first()
 
@@ -266,7 +254,6 @@ def get_author_by_id(author_id):
     return jsonify(author.serialize()), 200
 
 @api.route('/author', methods=['POST'])
-
 def post_author():
     body = request.get_json()
 
@@ -293,7 +280,6 @@ def post_author():
         return jsonify({'error': str(e)}), 500
 
 @api.route('/author/<int:author_id>', methods=['DELETE'])
-
 def delete_author_by_id(author_id):
     author = Author.query.filter_by(id=author_id).first()
 
@@ -306,7 +292,6 @@ def delete_author_by_id(author_id):
     return jsonify(author.serialize()), 200
 
 @api.route('/author/<int:author_id>', methods=['PUT'])
-
 def update_author(author_id):
     request_body_author = request.get_json()
 
@@ -329,14 +314,12 @@ def update_author(author_id):
 ############# C.R.U.D NEWSPAPER ##############
 
 @api.route('/newspaper', methods=['GET'])
-
 def get_newspaper():
     all_newspapers = Newspaper.query.all()
     newspapers = list(map(lambda character: character.serialize(),all_newspapers))
     return jsonify(newspapers), 200
 
 @api.route('/newspaper/<int:newspaper_id>', methods=['GET'])
-
 def get_newspaper_by_id(newspaper_id):
     newspaper = Newspaper.query.filter_by(id=newspaper_id).first()
 
@@ -346,7 +329,6 @@ def get_newspaper_by_id(newspaper_id):
     return jsonify(newspaper.serialize()), 200
 
 @api.route('/newspaper', methods=['POST'])
-
 def post_newspaper():
     body = request.get_json()
 
@@ -375,7 +357,6 @@ def post_newspaper():
         return jsonify({'error': str(e)}), 500
 
 @api.route('/newspaper/<int:newspaper_id>', methods=['DELETE'])
-
 def delete_newspaper_by_id(newspaper_id):
     newspaper = Newspaper.query.filter_by(id=newspaper_id).first()
 
@@ -388,7 +369,6 @@ def delete_newspaper_by_id(newspaper_id):
     return jsonify(newspaper.serialize()), 200
 
 @api.route('/newspaper/<int:newspaper_id>', methods=['PUT'])
-
 def update_newspaper(newspaper_id):
     request_body_newspaper = request.get_json()
 
@@ -414,14 +394,12 @@ def update_newspaper(newspaper_id):
 ############# C.R.U.D ARTICLE ##############
 
 @api.route('/article', methods=['GET'])
-
 def get_article():
     all_articles = Article.query.all()
     articles = list(map(lambda article: article.serialize(), all_articles))
     return jsonify(articles), 200
 
 @api.route('/category/<int:category_id>/article', methods=['GET'])
-
 def get_articles_by_category(category_id):
     category = Category.query.get(category_id)
     if category is None:
@@ -431,7 +409,6 @@ def get_articles_by_category(category_id):
     return jsonify([article.serialize() for article in articles]), 200
 
 @api.route('/article/<int:article_id>', methods=['GET'])
-
 def get_article_by_id(article_id):
     article = Article.query.filter_by(id=article_id).first()
 
@@ -441,7 +418,6 @@ def get_article_by_id(article_id):
     return jsonify(article.serialize()), 200
 
 @api.route('/article', methods=['POST'])
-
 def create_article():
     try:
         data = request.get_json()
@@ -468,7 +444,6 @@ def create_article():
         return jsonify({'error': str(e)}), 500
 
 @api.route('/article/<int:article_id>', methods=['DELETE'])
-
 def delete_article_by_id(article_id):
     article = Article.query.filter_by(id=article_id).first()
 
@@ -481,7 +456,6 @@ def delete_article_by_id(article_id):
     return jsonify(article.serialize()), 200
 
 @api.route('/article/<int:article_id>', methods=['PUT'])
-
 def update_article(article_id):
     request_body_article = request.get_json()
     article = Article.query.get(article_id)
@@ -514,6 +488,61 @@ def update_article(article_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
+
+######## FAVORITES - ARTICLES ########
+
+@api.route('/favorites', methods=['GET'])
+def get_favorites_articles():
+    favorites = FavoriteArticle.query.all()
+    favorite_articles = [favorite.serialize() for favorite in favorites]
+
+    return jsonify(favorite_articles), 200
+
+@api.route('/favorites/<int:article_id>', methods=['GET'])
+def get_favorite_article_by_id(article_id):
+    favorite = FavoriteArticle.query.filter_by(article_id=article_id).first()
+
+    if favorite:
+        return jsonify(favorite.serialize()), 200
+
+    return jsonify({'message': 'Favorite not found.'}), 404
+
+
+@api.route('/favorites', methods=['POST'])
+def add_favorite():
+    try:
+        article_id = request.json.get('article_id')
+        user_id = request.json.get('user_id')
+
+        if not article_id or not user_id:
+            return jsonify({'message': 'Article ID and User ID are required.'}), 400
+        
+        existing_favorite = FavoriteArticle.query.filter_by(user_id=user_id, article_id=article_id).first()
+        if existing_favorite:
+            return jsonify({'message': 'Article is already in favorites.'}), 409
+
+        favorite = FavoriteArticle(user_id=user_id, article_id=article_id)
+        db.session.add(favorite)
+        db.session.commit()
+
+        return jsonify({'message': 'Article added to favorites.'}), 201
+
+    except Exception as e:
+        db.session.rollback() 
+        return jsonify({'message': str(e)}), 500
+
+
+@api.route('/favorites/<int:article_id>', methods=['DELETE'])
+def remove_favorite(article_id):
+    favorite = FavoriteArticle.query.filter_by(article_id=article_id).first()
+
+    if favorite:
+        db.session.delete(favorite)
+        db.session.commit()
+        return jsonify({'message': 'Article removed from favorites.'}), 200
+
+    return jsonify({'message': 'Favorite not found.'}), 404
+
 
 ######## LOGIN ########
 
