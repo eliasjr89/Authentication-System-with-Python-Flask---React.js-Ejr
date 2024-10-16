@@ -50,7 +50,7 @@ export const AddAuthor = () => {
         setPhoto("");
         setId(null);
 
-        navigate("/author");
+        navigate("/authors");
     };
 
     return (
@@ -92,7 +92,7 @@ export const AddAuthor = () => {
                         <Button variant="primary" type="submit" className="shadow">
                             {id ? "Update Author" : "Add Author"}
                         </Button>
-                        <Link to="/author">
+                        <Link to="/authors">
                             <Button variant="secondary" className="shadow">
                                 Back to Authors
                             </Button>

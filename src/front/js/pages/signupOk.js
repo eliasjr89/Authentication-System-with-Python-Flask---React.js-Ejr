@@ -9,31 +9,30 @@ export const SignupOk = () => {
 
     useEffect(() => {
         const redirectTimeout = setTimeout(() => {
-            if (store.auth) {
-                setRedirect(true);
-            }
-        }, 2000); // Redirigir después de 2 segundos
+            setRedirect(true);
+        }, 3000);
 
         return () => clearTimeout(redirectTimeout);
-    }, [store.auth]);
+    }, []);
 
     return (
         <>
-            {redirect && <Navigate to="/" />}
-
-            <div 
-                className="d-flex justify-content-center align-items-center mt-5" 
-                style={{
-                    textShadow: "0 2px 4px rgba(0, 0, 0, 0.5)"
-                }}
+            {redirect ? <Navigate to="/login" /> : null}
+            <div
+                className="d-flex justify-content-center align-items-center vh-50"
             >
-                <div className="card shadow-lg p-4" style={{ width: '90%', maxWidth: '500px' }}>
-                    <h2 className="text-center">Registro realizado correctamente</h2>
-                    <h5 className="text-center">Redirigiendo a la página principal...</h5>
-                    <br />
-                    <div className="text-center mt-4">
-                        <div className="spinner-border" role="status">
-                            <span className="visually-hidden">Cargando...</span>
+                <div className="container text-center">
+                    <div className="row align-items-start mt-5">
+                        <div className="col-12">
+                            <div className="card p-4 shadow-sm">
+                                <h2 className="display-6 fw-bold">Registro realizado correctamente</h2>
+                                <h5 className="mb-4">Espere, por favor...</h5>
+                                <div className="text-center">
+                                    <div className="spinner-border" role="status">
+                                        <span className="visually-hidden">Cargando...</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

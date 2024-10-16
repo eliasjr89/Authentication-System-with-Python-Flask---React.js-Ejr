@@ -10,7 +10,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			auth: false,
 			newspapers: [],
 			articles: [],
-			article: null
+			article: null,
+			favoriteArticles: []
 		},
 		actions: {
 			login: async (email, password) => {
@@ -52,11 +53,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem("token");
 			},
 
-			signup: async (email, password) => {
+			signup: async (firstName, lastName, email, password) => {
 				const requestOptions = {
 					method: 'POST',
 					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ email, password })
+					body: JSON.stringify({ firstName, lastName, email, password })
 				};
 
 				try {
@@ -371,7 +372,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						method: 'DELETE'
 					});
 					if (response.ok) {
-						getActions().getArticles(); 
+						getActions().getArticles();
 						console.log(`Artículo con ID ${articleId} eliminado`);
 					} else {
 						const data = await response.json();

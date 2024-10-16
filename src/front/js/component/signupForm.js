@@ -80,7 +80,7 @@ export const SignupForm = () => {
                     Registrarse
                 </button>
                 <Link to="/">
-                    <button type="button" className="btn btn-primary" style={{ margin: "5px" }}>
+                    <button type="button" className="btn btn-secondary" style={{ margin: "5px" }}>
                         Volver a Inicio
                     </button>
                 </Link>

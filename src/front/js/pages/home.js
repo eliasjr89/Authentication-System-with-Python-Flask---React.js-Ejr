@@ -45,12 +45,23 @@ export const Home = () => {
           </Link>
         </p>
 
-        <h2 className="text-center mt-5">Artículos Recientes</h2>
+        <h2 className="text-center mt-5">Noticias Recientes</h2>
         <div className="row mt-3">
           {store.articles && store.articles.length > 0 ? (
             store.articles.slice(0, visibleArticles).map((article) => (
               <div className="col-12 col-md-6 col-lg-4 mb-4" key={article.id}>
-                <CardArticle article={article} />
+                <CardArticle
+                  id={article.id}
+                  title={article.title}
+                  content={article.content}
+                  image={article.image}
+                  published_date={article.published_date}
+                  source={article.source}
+                  link={article.link}
+                  author={article.author}
+                  newspaper={article.newspaper}
+                  category={article.category}
+                />
               </div>
             ))
           ) : (

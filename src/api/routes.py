@@ -15,7 +15,6 @@ from flask_jwt_extended import JWTManager
 
 api = Blueprint('api', __name__)
 
-# Allow CORS requests to this API
 CORS(api)
 
 ############# C.R.U.D USER ##############
@@ -198,18 +197,17 @@ def delete_category(category_id):
 ############# C.R.U.D USER CATEGORY ##############
 
 @api.route('/user-category', methods=['GET'])
-
+@jwt_required()
 def get_user_categories():
     user_categories = UserCategory.query.all()
     results = list(map(lambda item: item.serialize(), user_categories))
     
-    if not user_categories:
+    if not results:
         return jsonify(message="No se han encontrado relaciones entre usuarios y categorías"), 404
 
     return jsonify(results), 200
 
 @api.route('/user-category/<int:user_id>', methods=['GET'])
-
 def get_user_categories_by_user(user_id):
     user_categories = UserCategory.query.filter_by(user_id=user_id).all()
     
@@ -220,7 +218,6 @@ def get_user_categories_by_user(user_id):
     return jsonify(results), 200
 
 @api.route('/user-category', methods=['POST'])
-
 def add_user_category():
     request_body = request.get_json()
 
@@ -238,7 +235,6 @@ def add_user_category():
     return jsonify({"msg": "Relación entre usuario y categoría añadida correctamente"}), 200
 
 @api.route('/user-category/<int:user_category_id>', methods=['DELETE'])
-
 def delete_user_category(user_category_id):
     user_category = UserCategory.query.get(user_category_id)
 
@@ -543,7 +539,7 @@ def signup():
     user = User.query.filter_by(email=body["email"]).first()
 
     if user is None:
-        user = User(email=body["email"], password=body["password"], is_active=True)
+        user = User(first_name=["firstName"], last_name=["lastName"], email=body["email"], password=body["password"] )
         db.session.add(user)
         db.session.commit()
         response_body = {
@@ -556,6 +552,7 @@ def signup():
 ######## PRIVATE PAGE########
 
 @api.route("/paginaprivada", methods=["GET"])
+@jwt_required()
 def protected():
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Table, Container } from "react-bootstrap";
 import { Context } from "../store/appContext";
@@ -7,6 +7,8 @@ import Swal from "sweetalert2";
 export const Category = () => {
   const { store, actions } = useContext(Context);
   const location = useLocation();
+  const [editMode, setEditMode] = useState(null); // Controla qué categoría está siendo editada
+  const [editedCategory, setEditedCategory] = useState({}); // Guarda los valores editados
 
   useEffect(() => {
     actions.loadCategories();
@@ -38,6 +40,28 @@ export const Category = () => {
           });
         }
       }
+    });
+  };
+
+  const handleEditClick = (category) => {
+    setEditMode(category.id);
+    setEditedCategory({ ...category }); // Copia la categoría actual para la edición
+  };
+
+  const handleSaveClick = async (id) => {
+    try {
+      await actions.updateCategory(id, editedCategory); // Guarda la categoría actualizada
+      Swal.fire("Success!", "The category has been updated.", "success");
+      setEditMode(null); // Salimos del modo de edición
+    } catch (error) {
+      Swal.fire("Error!", "Failed to update the category.", "error");
+    }
+  };
+
+  const handleChange = (e) => {
+    setEditedCategory({
+      ...editedCategory,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -84,27 +108,69 @@ export const Category = () => {
               store.categories.map((category) => (
                 <tr key={category.id}>
                   <td>{category.id}</td>
-                  <td>{category.name}</td>
-                  <td>{category.description}</td>
+                  <td>
+                    {editMode === category.id ? (
+                      <input
+                        type="text"
+                        name="name"
+                        value={editedCategory.name}
+                        onChange={handleChange}
+                        className="form-control"
+                      />
+                    ) : (
+                      category.name
+                    )}
+                  </td>
+                  <td>
+                    {editMode === category.id ? (
+                      <input
+                        type="text"
+                        name="description"
+                        value={editedCategory.description}
+                        onChange={handleChange}
+                        className="form-control"
+                      />
+                    ) : (
+                      category.description
+                    )}
+                  </td>
                   <td>
                     <div className="d-flex justify-content-around flex-wrap">
-                      <Link to={`/category-details/${category.id}`}>
-                        <Button variant="info" className="mx-1 mb-1">
-                          View
-                        </Button>
-                      </Link>
-                      <Link to={`/edit-category/${category.id}`}>
-                        <Button variant="warning" className="mx-1 mb-1">
-                          Edit
-                        </Button>
-                      </Link>
-                      <Button
-                        variant="danger"
-                        onClick={() => handleDeleteCategory(category.id)}
-                        className="mx-1 mb-1"
-                      >
-                        Delete
-                      </Button>
+                      {editMode === category.id ? (
+                        <>
+                          <Button
+                            variant="success"
+                            className="mx-1 mb-1"
+                            onClick={() => handleSaveClick(category.id)}
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            variant="secondary"
+                            className="mx-1 mb-1"
+                            onClick={() => setEditMode(null)}
+                          >
+                            Cancel
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            variant="warning"
+                            className="mx-1 mb-1"
+                            onClick={() => handleEditClick(category)}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            variant="danger"
+                            className="mx-1 mb-1"
+                            onClick={() => handleDeleteCategory(category.id)}
+                          >
+                            Delete
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </td>
                 </tr>

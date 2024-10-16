@@ -11,17 +11,16 @@ import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Category } from "./pages/category";
 import { AddCategory } from "./pages/addCategory";
-import { CategoryDetails } from "./pages/categoryDetails";
-import { EditCategory } from "./pages/editCategory";
 import { AddAuthor } from "./pages/addAuthor";
 import { Author } from "./pages/author";
 import { AddNewspaper } from "./pages/addNewspaper";
 import { Newspaper } from "./pages/newspaper";
-import { NewspaperDetails } from "./pages/newspaperDetails";
-import { EditNewspaper } from "./pages/editNewspaper";
 import { UserCategories } from "./pages/userCategory";
 import { AddArticle } from "./pages/addArticle";
 import { SignupForm } from "./component/signupForm";
+import { LoginForm } from "./component/loginForm";
+import { Article } from "./pages/article";
+import { EditArticle } from "./pages/editArticle";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -34,23 +33,22 @@ const Layout = () => {
                 <ScrollToTop>
                     <Navbar />
                     <Routes>
+                        <Route element={<Home />} path="/" />
+                        <Route element={<SignupForm />} path="/signup" />
+                        <Route element={<SignupOk />} path="/signupok" />
+                        <Route element={<LoginForm />} path="/login" />
+                        <Route element={<LoginOk />} path="/loginok" />
                         <Route element={<Author />} path="/authors" />
+                        <Route element={<Article />} path="/articles" />
                         <Route element={<AddAuthor />} path="/add-author" />
                         <Route element={<AddArticle />} path="/add-article" />
                         <Route element={<AddCategory />} path="/add-category" />
-                        <Route element={<Home />} path="/" />
-                        <Route element={<LoginOk />} path="/loginok" />
-                        <Route element={<SignupForm />} path="/signup" />
+                        <Route element={<AddNewspaper />} path="/add-newspaper" />
+                        <Route element={<EditArticle />} path="/edit-article/:id" />
                         <Route element={<PaginaPrivada />} path="/paginaprivada" />
                         <Route element={<Category />} path="/categories" />
                         <Route element={<UserCategories />} path="/user-categories" />
                         <Route element={<Newspaper />} path="/newspapers" />
-                        <Route element={<AddNewspaper />} path="/add-newspaper" />
-                        <Route element={<NewspaperDetails />} path="/newspaper-details/:id" />
-                        <Route element={<EditNewspaper />} path="/edit-newspaper/:id" />
-                        <Route element={<EditCategory />} path="/edit-category/:id" />
-                        <Route element={<CategoryDetails />} path="/category-details/:id" />
-                        <Route element={<SignupOk />} path="/signupok" />
                         <Route element={<LogoutOk />} path="/logoutOk" />
                         <Route element={<h1>Not found!</h1>} />
                     </Routes>

@@ -34,6 +34,8 @@ export const EditArticle = () => {
                 newspaper: article.newspaper,
                 category: article.category
             });
+        } else {
+            navigate("/articles"); // Redirige si no encuentra el artículo
         }
     }, [id, store.articles]);
 

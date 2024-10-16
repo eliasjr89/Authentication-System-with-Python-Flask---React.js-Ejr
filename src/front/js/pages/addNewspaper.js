@@ -25,7 +25,7 @@ export const AddNewspaper = () => {
             timer: 1500
         });
         setTimeout(() => {
-            navigate("/newspaper");
+            navigate("/newspapers");
         }, 1500);
     };
 

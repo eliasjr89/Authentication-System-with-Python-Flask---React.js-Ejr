@@ -1,16 +1,23 @@
-// src/front/js/pages/UserCategories.js
 import React, { useEffect, useContext, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import { Link } from "react-router-dom";
 
 export const UserCategories = () => {
     const { store, actions } = useContext(Context);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate(); // Inicializa useNavigate
 
     useEffect(() => {
-        actions.loadCategories();
-    }, []);
+        // Verifica si el usuario está autenticado
+        if (!store.auth) {
+            navigate("/"); // Redirige a la página de inicio o login
+        } else {
+            actions.loadCategories(); // Carga las categorías solo si está autenticado
+        }
+    }, [store.auth]); // Asegúrate de que se ejecute cada vez que cambie el estado de autenticación
 
     const handleSelectCategory = (categoryId) => {
         if (selectedCategories.includes(categoryId)) {
@@ -23,6 +30,11 @@ export const UserCategories = () => {
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
+    const handleContinue = () => {
+        // Aquí puedes agregar lógica para guardar las categorías seleccionadas si es necesario
+        navigate("/paginaprivada"); // Cambia esto a la ruta de tu página privada
+    };
+
     return (
         <div className="container d-flex flex-column align-items-center mt-5" style={{ minHeight: "100vh" }}>
             <h1 className="display-4 text-center mb-4">Add one or more categories</h1>
@@ -33,7 +45,7 @@ export const UserCategories = () => {
 
             <hr className="my-4" />
 
-            <Modal show={showModal} onHide={handleCloseModal} className="mt-3">
+            <Modal show={showModal} onHide={handleCloseModal} className="mt-5">
                 <Modal.Header closeButton>
                     <Modal.Title>Select Categories</Modal.Title>
                 </Modal.Header>
@@ -55,15 +67,24 @@ export const UserCategories = () => {
                         )}
                     </div>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>
+                <Modal.Footer className="justify-content-center">
+                    <Button variant="secondary" onClick={handleCloseModal} style={{ width: '120px' }}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleCloseModal}>
+                    <Button variant="primary" onClick={handleCloseModal} style={{ width: '120px' }}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
             </Modal>
+
+            {/* Botón para continuar */}
+            {selectedCategories.length > 0 && (
+                <Link to="/paginaprivada">
+                    <Button variant="success" onClick={handleContinue}>
+                        Continue
+                    </Button>
+                </Link>
+            )}
         </div>
     );
 };

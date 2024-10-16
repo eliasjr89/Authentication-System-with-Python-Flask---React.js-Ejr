@@ -19,7 +19,7 @@ export const Author = () => {
             <div className="d-flex justify-content-between mt-3 mb-3 flex-wrap">
                 <Link to="/add-author">
                     <Button variant="primary" className="mx-2 mb-2 shadow">
-                        Add Category
+                        Add Author
                     </Button>
                 </Link>
 
